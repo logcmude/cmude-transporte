@@ -89,6 +89,8 @@
   .estado-en_ruta .dot { background: #3b82f6; animation: pulso 1.5s infinite; }
   .estado-finalizado { background: #f3f4f6; color: #6b7280; }
   .estado-finalizado .dot { background: #d1d5db; }
+  .estado-no_disponible { background: #1f2937; color: #9ca3af; }
+  .estado-no_disponible .dot { background: #4b5563; }
   @keyframes pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
   .barra-wrap { margin: 10px 0; }
@@ -148,15 +150,16 @@
 <script>
 // ════════════════════════════════════════════
 // ⚠️  REEMPLAZA ESTA URL CON LA DE TU APPS SCRIPT
-const API_URL = "https://script.google.com/macros/s/AKfycbxQTmOdtfZU1zf9LVnH858GzGc5KtzDSicOWWHtNWftVpauYEOSHNkcB1gHan8wC1h2-w/exec";
+const API_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
 // ════════════════════════════════════════════
 
 const ESTADOS = {
-  esperando:  { label: "Esperando",  clase: "estado-esperando" },
-  disponible: { label: "Disponible", clase: "estado-disponible" },
-  lleno:      { label: "Lleno",      clase: "estado-lleno" },
-  en_ruta:    { label: "En ruta",    clase: "estado-en_ruta" },
-  finalizado: { label: "Finalizado", clase: "estado-finalizado" },
+  esperando:      { label: "Esperando",      clase: "estado-esperando" },
+  disponible:     { label: "Disponible",     clase: "estado-disponible" },
+  lleno:          { label: "Lleno",          clase: "estado-lleno" },
+  en_ruta:        { label: "En ruta",        clase: "estado-en_ruta" },
+  finalizado:     { label: "Finalizado",     clase: "estado-finalizado" },
+  no_disponible:  { label: "No disponible",  clase: "estado-no_disponible" },
 };
 
 let buses = [];
