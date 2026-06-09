@@ -328,7 +328,7 @@ function htmlModal(bus) {
         <div class="campo"><label>Hora de embarque (itinerario base)</label><input type="text" id="f-horaEstimada" placeholder="ej: 10:00" value="${bus.horaEstimada || ""}" /></div>
         <div class="campo"><label>Hora de llegada real</label><input type="text" id="f-horaLlegada" placeholder="—" value="${bus.horaLlegada || ""}" /></div>
         <div class="campo"><label>Hora de salida</label><input type="text" id="f-horaSalida" placeholder="—" value="${bus.horaSalida || ""}" /></div>
-        <div class="campo"><label>Link GPS (desde WhatsApp)</label><input type="text" id="f-gpsLink" placeholder="https://maps.app.goo.gl/..." value="${bus.gpsLink || ""}" /></div>
+        <div class="campo"><label>Link GPS (desde maps)</label><input type="text" id="f-gpsLink" placeholder="https://maps.app.goo.gl/..." value="${bus.gpsLink || ""}" /></div>
         <div class="campo"><label>Observaciones</label><textarea id="f-observaciones">${bus.observaciones || ""}</textarea></div>
         <div class="modal-btns">
           <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
