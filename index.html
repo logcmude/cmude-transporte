@@ -150,7 +150,7 @@
 <script>
 // ════════════════════════════════════════════
 // ⚠️  REEMPLAZA ESTA URL CON LA DE TU APPS SCRIPT
-const API_URL = "https://script.google.com/macros/s/AKfycbxQTmOdtfZU1zf9LVnH858GzGc5KtzDSicOWWHtNWftVpauYEOSHNkcB1gHan8wC1h2-w/exec";
+const API_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
 // ════════════════════════════════════════════
 
 const ESTADOS = {
@@ -163,7 +163,8 @@ const ESTADOS = {
 };
 
 let buses = [];
-let vistaActual = "publica";
+const ES_VOLUNTARIO = new URLSearchParams(window.location.search).get("modo") === "voluntario";
+let vistaActual = ES_VOLUNTARIO ? "voluntario" : "publica";
 let filtroActual = "todos";
 let editandoBus = null;
 let proximasAbiertas = false;
@@ -359,10 +360,7 @@ function render() {
             <div class="logo-subtitulo">Quito · ${buses.length} buses · capacidad ${buses.reduce((s,b)=>s+b.capacidad,0)}</div>
           </div>
         </div>
-        <div class="tabs">
-          <button class="tab ${vistaActual === "publica" ? "activo" : ""}" onclick="cambiarVista('publica')">${icon("ojo", 14)} Participantes</button>
-          <button class="tab ${vistaActual === "voluntario" ? "activo" : ""}" onclick="cambiarVista('voluntario')">${icon("engranaje", 14)} Voluntarios</button>
-        </div>
+        ${ES_VOLUNTARIO ? `<div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#fef3c7;border-radius:8px;font-size:12px;font-weight:600;color:#92400e">${icon("engranaje", 13)} Modo voluntario</div>` : ""}
         <div class="hora-reloj">${syncTexto}</div>
       </div>
     </header>
