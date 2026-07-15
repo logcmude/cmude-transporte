@@ -5,419 +5,383 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Transporte CMUDE 2026</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --azul: #1a56db; --azul-claro: #e8f0fe; --azul-texto: #1e40af;
-    --verde: #166534; --verde-claro: #dcfce7;
-    --rojo: #991b1b; --rojo-claro: #fee2e2;
-    --naranja: #92400e; --naranja-claro: #fef3c7;
-    --morado: #5b21b6; --morado-claro: #ede9fe;
-    --gris-claro: #f3f4f6; --gris-borde: #e5e7eb;
-    --texto: #111827; --texto-muted: #6b7280; --blanco: #ffffff;
-    --radio: 10px; --radio-lg: 14px;
-  }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f4ff; color: var(--texto); min-height: 100vh; font-size: 14px; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --azul: #1a56db; --azul-claro: #e8f0fe; --azul-texto: #1e40af;
+  --verde: #166534; --verde-claro: #dcfce7;
+  --rojo: #991b1b; --rojo-claro: #fee2e2;
+  --naranja: #92400e; --naranja-claro: #fef3c7;
+  --gris: #f3f4f6; --gris-borde: #e5e7eb;
+  --texto: #111827; --texto-muted: #6b7280; --blanco: #ffffff;
+  --radio: 10px; --radio-lg: 14px;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f1f5f9; color: var(--texto); min-height: 100vh; font-size: 14px; }
+@keyframes pulso { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes spin   { to{transform:rotate(360deg)} }
 
-  /* ── HEADER STICKY ── */
-  .header { background: var(--blanco); border-bottom: 1px solid var(--gris-borde); padding: 0 20px; position: sticky; top: 0; z-index: 100; }
-  .header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 12px; }
-  .logo { display: flex; align-items: center; gap: 9px; }
-  .logo-icon { width: 32px; height: 32px; background: var(--azul); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .logo-icon svg { width: 17px; height: 17px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .logo-titulo { font-weight: 700; font-size: 14px; letter-spacing: -0.2px; }
-  .tabs { display: flex; gap: 4px; }
-  .tab { padding: 6px 13px; border-radius: var(--radio); border: 1px solid transparent; background: none; font-size: 12px; font-weight: 600; color: var(--texto-muted); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-  .tab.activo { background: var(--azul); color: white; border-color: var(--azul); }
-  .tab:not(.activo):hover { background: var(--gris-claro); color: var(--texto); }
-  .sync-indicator { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--texto-muted); white-space: nowrap; }
-  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulso 2s infinite; }
+/* ── HEADER ── */
+.header { background: var(--blanco); border-bottom: 1px solid var(--gris-borde); padding: 0 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.header-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 54px; gap: 12px; }
+.logo { display: flex; align-items: center; gap: 9px; }
+.logo-icon { width: 34px; height: 34px; background: var(--azul); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo-icon svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.logo-titulo { font-weight: 700; font-size: 15px; letter-spacing: -.3px; }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: pulso 2s infinite; flex-shrink: 0; }
 
-  /* ── BANNER DE ANUNCIOS ── */
-  .banner-wrap { position: sticky; top: 52px; z-index: 90; }
-  .banner { background: #1e3a8a; color: white; padding: 0 20px; min-height: 0; overflow: hidden; transition: min-height 0.3s; }
-  .banner.vacio { display: none; }
-  .banner-inner { max-width: 960px; margin: 0 auto; padding: 14px 0; display: flex; align-items: flex-start; gap: 12px; }
-  .banner-icon { flex-shrink: 0; width: 32px; height: 32px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
-  .banner-icon svg { width: 16px; height: 16px; fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-  .banner-contenido { flex: 1; min-width: 0; }
-  .banner-etiqueta { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #93c5fd; margin-bottom: 4px; }
-  .banner-texto { font-size: 14px; font-weight: 500; line-height: 1.5; color: white; }
+/* ── BANNER ── */
+.banner-wrap { position: sticky; top: 54px; z-index: 90; }
+.banner { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); padding: 0 20px; display: none; }
+.banner.visible { display: block; }
+.banner-inner { max-width: 960px; margin: 0 auto; padding: 14px 0 16px; display: flex; gap: 12px; align-items: flex-start; }
+.banner-icon-wrap { flex-shrink: 0; width: 36px; height: 36px; background: rgba(255,255,255,.15); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+.banner-icon-wrap svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.banner-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: #93c5fd; margin-bottom: 5px; }
+.banner-msg { font-size: 14px; font-weight: 500; color: #fff; line-height: 1.55; }
 
-  /* ── PRÓXIMOS EMBARQUES ── */
-  .proximos-wrap { background: var(--blanco); border-bottom: 1px solid var(--gris-borde); padding: 0 20px; }
-  .proximos-inner { max-width: 960px; margin: 0 auto; padding: 12px 0; }
-  .proximos-titulo { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--texto-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .proximos-lista { display: flex; flex-direction: column; gap: 6px; }
-  .proximo-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radio); border: 1px solid var(--gris-borde); background: var(--gris-claro); }
-  .proximo-item.embarcando { background: var(--verde-claro); border-color: #bbf7d0; }
-  .proximo-item.proximo { background: var(--azul-claro); border-color: #bfdbfe; }
-  .proximo-hora { font-size: 16px; font-weight: 800; min-width: 48px; color: var(--texto); line-height: 1; }
-  .proximo-item.embarcando .proximo-hora { color: var(--verde); }
-  .proximo-item.proximo .proximo-hora { color: var(--azul-texto); }
-  .proximo-sep { width: 1px; height: 28px; background: var(--gris-borde); flex-shrink: 0; }
-  .proximo-item.embarcando .proximo-sep { background: #86efac; }
-  .proximo-item.proximo .proximo-sep { background: #93c5fd; }
-  .proximo-info { flex: 1; min-width: 0; }
-  .proximo-bus-num { font-size: 12px; font-weight: 700; color: var(--texto); }
-  .proximo-ruta { font-size: 11px; color: var(--texto-muted); margin-top: 2px; display: flex; align-items: center; gap: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .proximo-estado-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; }
-  .proximo-item.embarcando .proximo-estado-badge { background: #16a34a; color: white; }
-  .proximo-item.proximo .proximo-estado-badge { background: var(--azul); color: white; }
-  .proximos-vacio { font-size: 12px; color: var(--texto-muted); padding: 4px 0; }
+/* ── PRÓXIMOS ── */
+.proximos-section { background: var(--blanco); border-bottom: 1px solid var(--gris-borde); padding: 0 20px; }
+.proximos-inner { max-width: 960px; margin: 0 auto; padding: 14px 0; }
+.section-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: var(--texto-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.proximos-grid { display: flex; flex-direction: column; gap: 7px; }
+.proximo-card { display: flex; align-items: center; gap: 10px; padding: 10px 13px; border-radius: var(--radio); border: 1.5px solid; }
+.proximo-card.ahora { background: var(--verde-claro); border-color: #86efac; }
+.proximo-card.pronto { background: var(--azul-claro); border-color: #93c5fd; }
+.proximo-hora { font-size: 17px; font-weight: 800; min-width: 52px; line-height: 1; }
+.proximo-card.ahora .proximo-hora { color: var(--verde); }
+.proximo-card.pronto .proximo-hora { color: var(--azul-texto); }
+.proximo-divider { width: 1px; height: 30px; flex-shrink: 0; }
+.proximo-card.ahora .proximo-divider { background: #86efac; }
+.proximo-card.pronto .proximo-divider { background: #93c5fd; }
+.proximo-data { flex: 1; min-width: 0; }
+.proximo-bus { font-size: 13px; font-weight: 700; color: var(--texto); }
+.proximo-ruta { font-size: 12px; color: var(--texto-muted); margin-top: 2px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.proximo-pill { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .3px; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
+.proximo-card.ahora .proximo-pill { background: #16a34a; color: #fff; }
+.proximo-card.pronto .proximo-pill { background: var(--azul); color: #fff; }
 
-  /* ── FILTROS ── */
-  .filtros-wrap { padding: 0 20px; }
-  .filtros-inner { max-width: 960px; margin: 0 auto; padding: 14px 0 10px; display: flex; gap: 6px; flex-wrap: wrap; }
-  .filtro-btn { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--gris-borde); background: var(--blanco); font-size: 12px; color: var(--texto-muted); cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; font-weight: 500; }
-  .filtro-btn:hover { border-color: #9ca3af; color: var(--texto); }
-  .filtro-btn.activo { background: var(--texto); color: white; border-color: var(--texto); }
-  .badge-count { border-radius: 10px; padding: 0 5px; font-size: 10px; font-weight: 700; }
-  .filtro-btn.activo .badge-count { background: rgba(255,255,255,0.25); }
-  .filtro-btn:not(.activo) .badge-count { background: var(--gris-claro); color: var(--texto-muted); }
+/* ── FILTROS ── */
+.filtros-section { padding: 0 20px; }
+.filtros-inner { max-width: 960px; margin: 0 auto; padding: 14px 0 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.filtro-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--gris-borde); background: var(--blanco); font-size: 12px; font-weight: 500; color: var(--texto-muted); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
+.filtro-btn:hover { border-color: #9ca3af; color: var(--texto); }
+.filtro-btn.activo { background: var(--texto); color: #fff; border-color: var(--texto); }
+.badge { border-radius: 9px; padding: 0 5px; font-size: 10px; font-weight: 700; }
+.filtro-btn.activo .badge { background: rgba(255,255,255,.25); }
+.filtro-btn:not(.activo) .badge { background: var(--gris); color: var(--texto-muted); }
 
-  /* ── GRID BUSES ── */
-  .main { max-width: 960px; margin: 0 auto; padding: 0 20px 30px; }
-  .grid-buses { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+/* ── GRID ── */
+.main { max-width: 960px; margin: 0 auto; padding: 16px 20px 40px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 12px; }
 
-  /* ── TARJETA BUS ── */
-  .tarjeta { background: var(--blanco); border: 1px solid var(--gris-borde); border-radius: var(--radio-lg); padding: 16px; transition: box-shadow 0.15s; }
-  .tarjeta:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-  .tarjeta.estado-embarcando { border-color: #86efac; border-width: 1.5px; }
-  .tarjeta.estado-en_ruta { border-color: #93c5fd; border-width: 1.5px; }
+/* ── TARJETA ── */
+.card { background: var(--blanco); border: 1.5px solid var(--gris-borde); border-radius: var(--radio-lg); padding: 16px; transition: box-shadow .15s; }
+.card:hover { box-shadow: 0 3px 12px rgba(0,0,0,.08); }
+.card.embarcando { border-color: #86efac; }
+.card.en_ruta    { border-color: #93c5fd; }
+.card.no_disponible { opacity: .65; }
 
-  .tarjeta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-  .bus-id { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; color: var(--texto); }
-  .estado-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-  .estado-badge .dot { width: 6px; height: 6px; border-radius: 50%; }
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.bus-num { font-size: 19px; font-weight: 800; letter-spacing: -.4px; }
 
-  .estado-esperando  { background: #f3f4f6; color: #374151; }
-  .estado-esperando .dot { background: #9ca3af; }
-  .estado-embarcando { background: var(--verde-claro); color: var(--verde); }
-  .estado-embarcando .dot { background: #22c55e; animation: pulso 1.5s infinite; }
-  .estado-en_ruta    { background: var(--azul-claro); color: var(--azul-texto); }
-  .estado-en_ruta .dot { background: #3b82f6; animation: pulso 2s infinite; }
-  .estado-finalizado { background: #f3f4f6; color: #6b7280; }
-  .estado-finalizado .dot { background: #d1d5db; }
+/* estados */
+.badge-estado { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge-estado .dot { width: 6px; height: 6px; border-radius: 50%; }
+.s-esperando    { background:#f3f4f6; color:#374151; } .s-esperando .dot    { background:#9ca3af; }
+.s-embarcando   { background:var(--verde-claro); color:var(--verde); } .s-embarcando .dot   { background:#22c55e; animation:pulso 1.5s infinite; }
+.s-en_ruta      { background:var(--azul-claro); color:var(--azul-texto); } .s-en_ruta .dot      { background:#3b82f6; animation:pulso 2s infinite; }
+.s-finalizado   { background:#f3f4f6; color:#6b7280; } .s-finalizado .dot   { background:#d1d5db; }
+.s-no_disponible{ background:#1f2937; color:#9ca3af; } .s-no_disponible .dot{ background:#4b5563; }
 
-  @keyframes pulso { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+/* ruta */
+.ruta-box { display: flex; align-items: center; gap: 8px; background: #f8fafc; border: 1px solid var(--gris-borde); border-radius: var(--radio); padding: 10px 12px; margin-bottom: 10px; }
+.ruta-col { flex: 1; min-width: 0; }
+.ruta-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--texto-muted); margin-bottom: 3px; }
+.ruta-val { font-size: 12px; font-weight: 600; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ruta-col.right { text-align: right; }
+.ruta-arrow { flex-shrink: 0; color: #9ca3af; }
 
-  /* ── RUTA DEL BUS ── */
-  .bus-ruta { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: var(--gris-claro); border-radius: var(--radio); margin-bottom: 10px; }
-  .bus-ruta-desde { flex: 1; min-width: 0; }
-  .bus-ruta-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--texto-muted); margin-bottom: 2px; }
-  .bus-ruta-valor { font-size: 12px; font-weight: 600; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .bus-ruta-flecha { flex-shrink: 0; color: var(--texto-muted); }
-  .bus-ruta-hasta { flex: 1; min-width: 0; text-align: right; }
+/* cap */
+.cap-row { font-size: 12px; color: var(--texto-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+.cap-row strong { color: var(--texto); font-weight: 700; font-size: 14px; }
 
-  /* ── CAPACIDAD ── */
-  .bus-capacidad { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--texto-muted); margin-bottom: 10px; }
-  .bus-capacidad strong { color: var(--texto); font-weight: 700; font-size: 14px; }
+/* meta */
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--texto-muted); }
+.meta-item strong { color: var(--texto); font-weight: 600; }
+.meta-item.blue { color: var(--azul-texto); }
+.meta-item.blue strong { color: var(--azul-texto); }
+.gps-link { display: inline-flex; align-items: center; gap: 4px; margin-top: 8px; padding: 5px 11px; border-radius: 8px; background: var(--azul-claro); color: var(--azul-texto); font-size: 12px; font-weight: 700; text-decoration: none; }
+.obs-box { margin-top: 10px; padding: 7px 10px; background: var(--naranja-claro); color: var(--naranja); border-radius: 8px; font-size: 12px; display: flex; gap: 6px; align-items: flex-start; line-height: 1.4; }
+.btn-edit { width: 100%; margin-top: 12px; padding: 7px; border-radius: 8px; border: 1px solid var(--gris-borde); background: none; font-size: 12px; font-weight: 600; color: var(--texto-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: all .15s; }
+.btn-edit:hover { background: var(--gris); color: var(--texto); }
 
-  /* ── HORARIO Y GPS ── */
-  .bus-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-  .bus-meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--texto-muted); }
-  .bus-meta-item strong { color: var(--texto); font-weight: 600; }
-  .bus-meta-item.destacado { color: var(--azul-texto); }
-  .bus-meta-item.destacado strong { color: var(--azul-texto); }
-  .gps-btn { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 7px; background: var(--azul-claro); color: var(--azul-texto); font-size: 11px; font-weight: 700; text-decoration: none; border: none; cursor: pointer; }
+/* ── MODAL ── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
+@media(min-width:600px){ .overlay { align-items: center; padding: 16px; } }
+.modal { background: var(--blanco); border-radius: 18px 18px 0 0; width: 100%; max-width: 430px; max-height: 92vh; overflow-y: auto; padding: 20px; }
+@media(min-width:600px){ .modal { border-radius: var(--radio-lg); } }
+.handle { width: 36px; height: 4px; background: var(--gris-borde); border-radius: 2px; margin: 0 auto 16px; }
+@media(min-width:600px){ .handle { display:none; } }
+.modal-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.modal-title { font-size: 16px; font-weight: 700; }
+.modal-close { width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--gris-borde); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--texto-muted); }
+.field { margin-bottom: 13px; }
+.field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--texto-muted); margin-bottom: 5px; }
+.field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border: 1.5px solid var(--gris-borde); border-radius: var(--radio); font-size: 14px; color: var(--texto); background: var(--blanco); font-family: inherit; transition: border-color .15s; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(26,86,219,.1); }
+.field textarea { resize: vertical; min-height: 65px; }
+.field-divider { height: 1px; background: var(--gris-borde); margin: 4px 0 14px; }
+.modal-btns { display: flex; gap: 8px; margin-top: 18px; }
+.btn-cancel { flex:1; padding: 11px; border-radius: var(--radio); border: 1.5px solid var(--gris-borde); background: none; font-size: 14px; color: var(--texto-muted); cursor: pointer; font-family: inherit; font-weight: 500; }
+.btn-save { flex:2; padding: 11px; border-radius: var(--radio); border: none; background: var(--azul); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; }
+.btn-save:hover { background: #1e40af; }
+.btn-save:disabled { background: #93c5fd; cursor: not-allowed; }
+.aviso-vol { margin-top: 20px; padding: 12px 14px; background: var(--naranja-claro); border-radius: var(--radio-lg); border: 1px solid #fcd34d; font-size: 12px; color: var(--naranja); line-height: 1.5; display: flex; gap: 8px; }
+.vacio { grid-column:1/-1; text-align: center; padding: 40px; color: var(--texto-muted); }
 
-  /* ── OBSERVACIONES ── */
-  .obs { margin-top: 10px; padding: 7px 10px; background: var(--naranja-claro); color: var(--naranja); border-radius: 7px; font-size: 12px; display: flex; align-items: flex-start; gap: 6px; line-height: 1.4; }
-
-  /* ── BTN EDITAR ── */
-  .btn-editar { padding: 4px 9px; border-radius: 7px; border: 1px solid var(--gris-borde); background: none; color: var(--texto-muted); font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.15s; margin-top: 10px; width: 100%; justify-content: center; }
-  .btn-editar:hover { background: var(--gris-claro); color: var(--texto); }
-
-  /* ── MODAL ── */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: flex-end; justify-content: center; z-index: 200; padding: 0; }
-  @media (min-width: 600px) { .modal-overlay { align-items: center; padding: 16px; } }
-  .modal { background: var(--blanco); border-radius: 18px 18px 0 0; padding: 22px; width: 100%; max-width: 420px; max-height: 92vh; overflow-y: auto; }
-  @media (min-width: 600px) { .modal { border-radius: var(--radio-lg); } }
-  .modal-handle { width: 36px; height: 4px; background: var(--gris-borde); border-radius: 2px; margin: 0 auto 18px; }
-  @media (min-width: 600px) { .modal-handle { display: none; } }
-  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .modal-titulo { font-size: 16px; font-weight: 700; }
-  .modal-cerrar { width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--gris-borde); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--texto-muted); }
-  .campo { margin-bottom: 14px; }
-  .campo label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--texto-muted); margin-bottom: 6px; }
-  .campo input, .campo select, .campo textarea { width: 100%; padding: 10px 12px; border: 1.5px solid var(--gris-borde); border-radius: var(--radio); font-size: 14px; color: var(--texto); background: var(--blanco); font-family: inherit; transition: border-color 0.15s; }
-  .campo input:focus, .campo select:focus, .campo textarea:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
-  .campo textarea { resize: vertical; min-height: 70px; }
-  .modal-btns { display: flex; gap: 8px; margin-top: 20px; }
-  .btn-cancelar { flex: 1; padding: 11px; border-radius: var(--radio); border: 1.5px solid var(--gris-borde); background: none; font-size: 14px; color: var(--texto-muted); cursor: pointer; font-family: inherit; font-weight: 500; }
-  .btn-guardar { flex: 2; padding: 11px; border-radius: var(--radio); border: none; background: var(--azul); color: white; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; }
-  .btn-guardar:hover { background: #1e40af; }
-  .btn-guardar:disabled { background: #93c5fd; cursor: not-allowed; }
-  .campo-divider { height: 1px; background: var(--gris-borde); margin: 6px 0 16px; }
-
-  /* ── AVISO VOLUNTARIO ── */
-  .aviso-vol { margin-top: 20px; padding: 12px 14px; background: var(--naranja-claro); border-radius: var(--radio-lg); border: 1px solid #fcd34d; font-size: 12px; color: var(--naranja); line-height: 1.5; display: flex; gap: 8px; }
-  .vacio { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--texto-muted); }
-
-  @media (max-width: 600px) {
-    .header-inner { height: 48px; }
-    .banner-texto { font-size: 13px; }
-    .main { padding: 0 12px 30px; }
-    .filtros-wrap { padding: 0 12px; }
-  }
+@media(max-width:600px){
+  .main { padding: 12px 12px 40px; }
+  .filtros-section { padding: 0 12px; }
+  .proximos-section, .banner { padding: 0 12px; }
+}
 </style>
 </head>
 <body>
 <div id="app">
   <div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:12px;color:#6b7280">
-    <div style="width:30px;height:30px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:spin 0.8s linear infinite"></div>
-    <div style="font-size:13px">Conectando...</div>
+    <div style="width:30px;height:30px;border:3px solid #e5e7eb;border-top-color:#1a56db;border-radius:50%;animation:spin .8s linear infinite"></div>
+    <div style="font-size:13px;font-weight:500">Conectando con Firebase...</div>
   </div>
-  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-const app = initializeApp({
-  databaseURL: "https://cmude-transporte-2026-default-rtdb.firebaseio.com"
-});
-const db = getDatabase(app);
+const app = initializeApp({ databaseURL: "https://cmude-transporte-2026-default-rtdb.firebaseio.com" });
+const db  = getDatabase(app);
 
-// ── Estados ──
-const ESTADOS = {
-  esperando:  { label: "Esperando",  clase: "estado-esperando"  },
-  embarcando: { label: "Embarcando", clase: "estado-embarcando" },
-  en_ruta:    { label: "En ruta",    clase: "estado-en_ruta"    },
-  finalizado: { label: "Finalizado", clase: "estado-finalizado" },
+// ── Constantes ──
+const DESTINOS = ["Hotel Hilton Colón", "USFQ", "UASB-E", "Aeropuerto", "Centro histórico", "Otro"];
+const ESTADOS  = {
+  esperando:    { label: "Esperando",     cls: "s-esperando"    },
+  embarcando:   { label: "Embarcando",    cls: "s-embarcando"   },
+  en_ruta:      { label: "En ruta",       cls: "s-en_ruta"      },
+  finalizado:   { label: "Finalizado",    cls: "s-finalizado"   },
+  no_disponible:{ label: "No disponible", cls: "s-no_disponible"},
 };
 
-// ── Estado app ──
-let buses     = [];
-let anuncio   = { texto: "", activo: false };
-let vistaActual  = "publica";
-let filtroActual = "todos";
-let editandoBus  = null;
-let guardando    = false;
-let proximosAbiertos = false;
+// ── Estado ──
+let buses   = [];
+let anuncio = { activo: false, texto: "" };
+let filtro  = "todos";
+let editBus = null;
+let saving  = false;
 
-const ES_VOLUNTARIO = new URLSearchParams(window.location.search).get("modo") === "voluntario";
-if (ES_VOLUNTARIO) vistaActual = "voluntario";
+const ES_VOL = new URLSearchParams(window.location.search).get("modo") === "voluntario";
 
-// ── Firebase listeners ──
+// ── Firebase ──
 onValue(ref(db, "buses"), snap => {
   const d = snap.val();
-  if (d) buses = Object.values(d).sort((a,b) => a.id - b.id);
+  buses = d ? Object.values(d).sort((a,b) => a.id - b.id) : [];
   render();
 });
 onValue(ref(db, "anuncio"), snap => {
-  const d = snap.val();
-  anuncio = d || { texto: "", activo: false };
+  anuncio = snap.val() || { activo: false, texto: "" };
   render();
 });
 
-// ── Iconos SVG ──
-const I = {
-  bus:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M7 18v2M17 18v2"/></svg>`,
-  mega:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>`,
-  pin:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-  arrow:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
-  reloj:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  gps:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
-  alerta:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
-  editar:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
-  users:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  ojo:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-  engranaje:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-  x:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-  chevron: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>`,
-  salida:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`,
-  info:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+// ── SVGs ──
+const SVG = {
+  bus:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 10h20M7 18v2M17 18v2"/></svg>`,
+  mega:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>`,
+  pin:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  arrow:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+  clock:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  up:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`,
+  gps:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
+  warn:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+  edit:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  users:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  x:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  info:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
 };
-const ic = (name, size=16) =>
-  `<span style="display:inline-flex;align-items:center;width:${size}px;height:${size}px;flex-shrink:0">${I[name]}</span>`;
+const ic = (n, s=16) => `<span style="display:inline-flex;align-items:center;width:${s}px;height:${s}px;flex-shrink:0">${SVG[n]}</span>`;
 
-// ── Banner de anuncios ──
+// ── Banner ──
 function htmlBanner() {
-  if (!anuncio.activo || !anuncio.texto) return `<div class="banner-wrap"><div class="banner vacio"></div></div>`;
+  if (!anuncio.activo || !anuncio.texto) return "";
   return `
     <div class="banner-wrap">
-      <div class="banner">
+      <div class="banner visible">
         <div class="banner-inner">
-          <div class="banner-icon">${ic("mega", 16)}</div>
-          <div class="banner-contenido">
-            <div class="banner-etiqueta">Aviso de transporte</div>
-            <div class="banner-texto">${anuncio.texto}</div>
+          <div class="banner-icon-wrap">${ic("mega",18)}</div>
+          <div>
+            <div class="banner-tag">Aviso de transporte</div>
+            <div class="banner-msg">${anuncio.texto}</div>
           </div>
         </div>
       </div>
     </div>`;
 }
 
-// ── Próximos embarques ──
+// ── Próximos embarques (automático) ──
 function htmlProximos() {
-  // Buses embarcando ahora O esperando con hora de embarque definida
-  const embarcando = buses.filter(b => b.estado === "embarcando");
-  const proximos   = buses.filter(b => b.estado === "esperando" && b.horaEmbarque && b.mostrarEnProximos);
+  const ahora = buses.filter(b => b.estado === "embarcando");
+  const pronto = buses
+    .filter(b => b.estado === "esperando" && b.horaEmbarque)
+    .sort((a,b) => a.horaEmbarque.localeCompare(b.horaEmbarque));
 
-  if (embarcando.length === 0 && proximos.length === 0) return "";
+  // Tomar solo los de la hora más próxima
+  let proximos = [];
+  if (pronto.length > 0) {
+    const horaMin = pronto[0].horaEmbarque;
+    proximos = pronto.filter(b => b.horaEmbarque === horaMin);
+  }
 
-  const ordenados = [
-    ...embarcando.map(b => ({ ...b, _tipo: "embarcando" })),
-    ...proximos.sort((a,b) => a.horaEmbarque.localeCompare(b.horaEmbarque)).map(b => ({ ...b, _tipo: "proximo" })),
-  ];
+  if (ahora.length === 0 && proximos.length === 0) return "";
 
-  const filas = ordenados.map(bus => {
-    const hora  = bus._tipo === "embarcando" ? "AHORA" : bus.horaEmbarque;
-    const label = bus._tipo === "embarcando" ? "Embarcando" : "Próximo";
+  const fila = (bus, tipo) => {
+    const hora  = tipo === "ahora" ? "AHORA" : bus.horaEmbarque;
+    const pill  = tipo === "ahora" ? "Embarcando" : "Próximo";
     return `
-      <div class="proximo-item ${bus._tipo}">
+      <div class="proximo-card ${tipo}">
         <div class="proximo-hora">${hora}</div>
-        <div class="proximo-sep"></div>
-        <div class="proximo-info">
-          <div class="proximo-bus-num">Bus ${String(bus.id).padStart(2,"0")}</div>
+        <div class="proximo-divider"></div>
+        <div class="proximo-data">
+          <div class="proximo-bus">Bus ${String(bus.id).padStart(2,"0")}</div>
           <div class="proximo-ruta">
-            ${ic("pin",11)} ${bus.ubicacionActual || "—"}
+            ${ic("pin",11)} ${bus.ubicacionActual||"—"}
             ${ic("arrow",11)}
-            ${bus.destino || "—"}
+            ${bus.destino||"—"}
           </div>
         </div>
-        <span class="proximo-estado-badge">${label}</span>
+        <span class="proximo-pill">${pill}</span>
       </div>`;
-  }).join("");
+  };
 
   return `
-    <div class="proximos-wrap">
+    <div class="proximos-section">
       <div class="proximos-inner">
-        <div class="proximos-titulo">${ic("reloj",12)} Embarques activos y próximos</div>
-        <div class="proximos-lista">${filas}</div>
+        <div class="section-label">${ic("clock",12)} Embarques activos y próximos</div>
+        <div class="proximos-grid">
+          ${ahora.map(b => fila(b,"ahora")).join("")}
+          ${proximos.map(b => fila(b,"pronto")).join("")}
+        </div>
       </div>
     </div>`;
 }
 
-// ── Tarjeta de bus ──
-function htmlTarjeta(bus) {
-  const est   = ESTADOS[bus.estado] || ESTADOS.esperando;
-  const esVol = vistaActual === "voluntario";
-  const esRuta = bus.estado === "en_ruta";
-  const esFin  = bus.estado === "finalizado";
+// ── Tarjeta ──
+function htmlCard(bus) {
+  const est    = ESTADOS[bus.estado] || ESTADOS.esperando;
+  const noDisp = bus.estado === "no_disponible";
+  const enRuta = bus.estado === "en_ruta";
 
   return `
-    <div class="tarjeta estado-${bus.estado}">
-      <div class="tarjeta-top">
-        <div class="bus-id">Bus ${String(bus.id).padStart(2,"0")}</div>
-        <span class="estado-badge ${est.clase}"><span class="dot"></span>${est.label}</span>
+    <div class="card ${bus.estado}">
+      <div class="card-top">
+        <div class="bus-num">Bus ${String(bus.id).padStart(2,"0")}</div>
+        <span class="badge-estado ${est.cls}"><span class="dot"></span>${est.label}</span>
       </div>
 
-      <div class="bus-ruta">
-        <div class="bus-ruta-desde">
-          <div class="bus-ruta-label">Ubicación actual</div>
-          <div class="bus-ruta-valor">${bus.ubicacionActual || "—"}</div>
+      ${noDisp ? "" : `
+      <div class="ruta-box">
+        <div class="ruta-col">
+          <div class="ruta-label">Ubicación actual</div>
+          <div class="ruta-val">${bus.ubicacionActual||"—"}</div>
         </div>
-        <div class="bus-ruta-flecha">${ic("arrow", 14)}</div>
-        <div class="bus-ruta-hasta">
-          <div class="bus-ruta-label" style="text-align:right">Destino</div>
-          <div class="bus-ruta-valor" style="text-align:right">${bus.destino || "—"}</div>
+        <div class="ruta-arrow">${ic("arrow",14)}</div>
+        <div class="ruta-col right">
+          <div class="ruta-label">Destino</div>
+          <div class="ruta-val">${bus.destino||"—"}</div>
         </div>
       </div>
 
-      <div class="bus-capacidad">
-        ${ic("users", 14)}
-        Capacidad: <strong>40</strong> personas
-      </div>
+      <div class="cap-row">${ic("users",14)} Capacidad: <strong>40</strong> personas</div>
 
-      <div class="bus-meta">
-        ${bus.horaEmbarque && !esRuta && !esFin ? `
-          <div class="bus-meta-item destacado">
-            ${ic("reloj", 13)} Hora de embarque: <strong>${bus.horaEmbarque}</strong>
-          </div>` : ""}
+      <div class="meta-row">
+        ${bus.horaEmbarque && !enRuta && bus.estado!=="finalizado" ? `
+          <div class="meta-item blue">${ic("clock",13)} Hora de embarque: <strong>${bus.horaEmbarque}</strong></div>` : ""}
         ${bus.horaSalida ? `
-          <div class="bus-meta-item">
-            ${ic("salida", 13)} Salió: <strong>${bus.horaSalida}</strong>
-          </div>` : ""}
+          <div class="meta-item">${ic("up",13)} Salió: <strong>${bus.horaSalida}</strong></div>` : ""}
         ${!bus.horaEmbarque && !bus.horaSalida ? `
-          <div class="bus-meta-item" style="color:#9ca3af">
-            ${ic("reloj", 13)} Sin horario aún
-          </div>` : ""}
+          <div class="meta-item" style="color:#9ca3af">${ic("clock",13)} Sin horario aún</div>` : ""}
       </div>
 
-      ${esRuta && bus.gpsLink ? `
-        <div style="margin-top:10px">
-          <a href="${bus.gpsLink}" target="_blank" class="gps-btn">
-            ${ic("gps", 12)} Ver ubicación en tiempo real
-          </a>
-        </div>` : ""}
+      ${enRuta && bus.gpsLink ? `
+        <a href="${bus.gpsLink}" target="_blank" class="gps-link">${ic("gps",13)} Ver ubicación en tiempo real</a>` : ""}
+      `}
 
-      ${bus.observaciones ? `
-        <div class="obs">${ic("alerta", 13)} ${bus.observaciones}</div>` : ""}
+      ${bus.observaciones ? `<div class="obs-box">${ic("warn",13)} ${bus.observaciones}</div>` : ""}
 
-      ${esVol ? `
-        <button class="btn-editar" onclick="window._abrirModal(${bus.id})">
-          ${ic("editar", 13)} Editar este bus
-        </button>` : ""}
+      ${ES_VOL ? `<button class="btn-edit" onclick="window._edit(${bus.id})">${ic("edit",13)} Editar este bus</button>` : ""}
     </div>`;
 }
 
-// ── Modal voluntario ──
+// ── Modal ──
 function htmlModal(bus) {
+  const desOpts = DESTINOS.map(d =>
+    `<option value="${d}" ${bus.destino===d?"selected":""}>${d}</option>`
+  ).join("");
+  const estOpts = Object.entries(ESTADOS).map(([k,v]) =>
+    `<option value="${k}" ${bus.estado===k?"selected":""}>${v.label}</option>`
+  ).join("");
+  const ubicOpts = DESTINOS.map(d =>
+    `<option value="${d}" ${bus.ubicacionActual===d?"selected":""}>${d}</option>`
+  ).join("");
+
   return `
-    <div class="modal-overlay" id="modal-overlay" onclick="window._clicFuera(event)">
+    <div class="overlay" id="overlay" onclick="window._closeMod(event)">
       <div class="modal">
-        <div class="modal-handle"></div>
-        <div class="modal-header">
-          <span class="modal-titulo">Bus ${String(bus.id).padStart(2,"0")}</span>
-          <button class="modal-cerrar" onclick="window._cerrarModal()">${ic("x",15)}</button>
+        <div class="handle"></div>
+        <div class="modal-hdr">
+          <span class="modal-title">Bus ${String(bus.id).padStart(2,"0")}</span>
+          <button class="modal-close" onclick="window._cerrar()">${ic("x",14)}</button>
         </div>
 
-        <div class="campo">
+        <div class="field">
           <label>Estado</label>
-          <select id="f-estado">
-            ${Object.entries(ESTADOS).map(([k,v]) =>
-              `<option value="${k}" ${bus.estado===k?"selected":""}>${v.label}</option>`
-            ).join("")}
-          </select>
+          <select id="f-estado">${estOpts}</select>
         </div>
 
-        <div class="campo-divider"></div>
+        <div class="field-divider"></div>
 
-        <div class="campo">
+        <div class="field">
           <label>Ubicación actual del bus</label>
-          <input type="text" id="f-ubicacion" placeholder="ej: Hotel Hilton Colón" value="${bus.ubicacionActual||""}" />
+          <select id="f-ubic">${ubicOpts}</select>
         </div>
-        <div class="campo">
+        <div class="field">
           <label>Destino</label>
-          <input type="text" id="f-destino" placeholder="ej: USFQ" value="${bus.destino||""}" />
+          <select id="f-dest">${desOpts}</select>
         </div>
 
-        <div class="campo-divider"></div>
+        <div class="field-divider"></div>
 
-        <div class="campo">
+        <div class="field">
           <label>Hora de embarque</label>
-          <input type="text" id="f-horaEmbarque" placeholder="ej: 10:00" value="${bus.horaEmbarque||""}" />
+          <input type="text" id="f-embarque" placeholder="ej: 10:00" value="${bus.horaEmbarque||""}" />
         </div>
-        <div class="campo">
+        <div class="field">
           <label>Hora de salida</label>
-          <input type="text" id="f-horaSalida" placeholder="—" value="${bus.horaSalida||""}" />
+          <input type="text" id="f-salida" placeholder="—" value="${bus.horaSalida||""}" />
         </div>
-        <div class="campo">
+        <div class="field">
           <label>Link GPS (ubicación en tiempo real)</label>
-          <input type="text" id="f-gpsLink" placeholder="https://maps.app.goo.gl/..." value="${bus.gpsLink||""}" />
+          <input type="text" id="f-gps" placeholder="https://maps.app.goo.gl/..." value="${bus.gpsLink||""}" />
         </div>
 
-        <div class="campo-divider"></div>
+        <div class="field-divider"></div>
 
-        <div class="campo">
-          <label>Mostrar en próximos embarques</label>
-          <select id="f-mostrar">
-            <option value="true"  ${bus.mostrarEnProximos?"selected":""}>Sí — mostrar</option>
-            <option value="false" ${!bus.mostrarEnProximos?"selected":""}>No — ocultar</option>
-          </select>
-        </div>
-        <div class="campo">
+        <div class="field">
           <label>Observaciones</label>
           <textarea id="f-obs">${bus.observaciones||""}</textarea>
         </div>
 
         <div class="modal-btns">
-          <button class="btn-cancelar" onclick="window._cerrarModal()">Cancelar</button>
-          <button class="btn-guardar" id="btn-guardar" onclick="window._guardar(${bus.id})" ${guardando?"disabled":""}>
-            ${guardando?"Guardando...":"Guardar cambios"}
+          <button class="btn-cancel" onclick="window._cerrar()">Cancelar</button>
+          <button class="btn-save" id="btn-save" onclick="window._save(${bus.id})">
+            Guardar cambios
           </button>
         </div>
       </div>
@@ -427,105 +391,92 @@ function htmlModal(bus) {
 // ── Render ──
 function render() {
   if (buses.length === 0) return;
-  const busesFiltrados = filtroActual === "todos"
-    ? buses
-    : buses.filter(b => b.estado === filtroActual);
-  const conteos = {};
-  Object.keys(ESTADOS).forEach(k => { conteos[k] = buses.filter(b => b.estado===k).length; });
+  const filtrados = filtro === "todos" ? buses : buses.filter(b => b.estado === filtro);
+  const cnt = {};
+  Object.keys(ESTADOS).forEach(k => { cnt[k] = buses.filter(b => b.estado===k).length; });
 
   document.getElementById("app").innerHTML = `
-    <!-- Header sticky -->
     <header class="header">
       <div class="header-inner">
         <div class="logo">
-          <div class="logo-icon">${ic("bus",17)}</div>
+          <div class="logo-icon">${ic("bus",18)}</div>
           <div class="logo-titulo">Transporte CMUDE 2026</div>
         </div>
-        <div class="tabs">
-          <button class="tab ${vistaActual==="publica"?"activo":""}" onclick="window._vista('publica')">
-            ${ic("ojo",13)} Participantes
-          </button>
-          <button class="tab ${vistaActual==="voluntario"?"activo":""}" onclick="window._vista('voluntario')">
-            ${ic("engranaje",13)} Voluntarios
-          </button>
-        </div>
-        <div class="sync-indicator">
-          <span class="sync-dot"></span>
-          <span style="display:none" class="hora-txt" id="hora-txt"></span>
-        </div>
+        ${ES_VOL ? `
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--naranja-claro);border-radius:8px;font-size:12px;font-weight:700;color:var(--naranja)">
+            ✏️ Modo voluntario
+          </div>` : ""}
+        <div class="sync-dot" title="Conectado en tiempo real"></div>
       </div>
     </header>
 
-    <!-- Banner de anuncios sticky -->
     ${htmlBanner()}
+    ${htmlProximos()}
 
-    <!-- Próximos embarques -->
-    ${vistaActual === "publica" ? htmlProximos() : ""}
-
-    <!-- Filtros -->
-    <div class="filtros-wrap">
+    <div class="filtros-section">
       <div class="filtros-inner">
-        <button class="filtro-btn ${filtroActual==="todos"?"activo":""}" onclick="window._filtro('todos')">
-          Todos <span class="badge-count">${buses.length}</span>
+        <button class="filtro-btn ${filtro==="todos"?"activo":""}" onclick="window._filt('todos')">
+          Todos <span class="badge">${buses.length}</span>
         </button>
         ${Object.entries(ESTADOS).map(([k,v]) => `
-          <button class="filtro-btn ${filtroActual===k?"activo":""}" onclick="window._filtro('${k}')">
-            ${v.label} <span class="badge-count">${conteos[k]}</span>
+          <button class="filtro-btn ${filtro===k?"activo":""}" onclick="window._filt('${k}')">
+            ${v.label} <span class="badge">${cnt[k]}</span>
           </button>`).join("")}
       </div>
     </div>
 
-    <!-- Grid de buses -->
     <div class="main">
-      <div class="grid-buses">
-        ${busesFiltrados.length > 0
-          ? busesFiltrados.map(htmlTarjeta).join("")
+      <div class="grid">
+        ${filtrados.length > 0
+          ? filtrados.map(htmlCard).join("")
           : `<div class="vacio">No hay buses en este estado.</div>`}
       </div>
-
-      ${vistaActual === "voluntario" ? `
+      ${ES_VOL ? `
         <div class="aviso-vol">
           ${ic("info",14)}
           <div style="margin-left:4px">
             <strong>Modo voluntario activo.</strong> Edita únicamente tu bus asignado.
-            Los cambios se reflejan en tiempo real para todas las participantes.
+            Los cambios se reflejan al instante para todas las participantes.
           </div>
         </div>` : ""}
     </div>
 
-    ${editandoBus ? htmlModal(editandoBus) : ""}`;
+    ${editBus ? htmlModal(editBus) : ""}`;
 }
 
 // ── Guardar en Firebase ──
-async function guardar(id) {
-  guardando = true; render();
+// CRÍTICO: leer DOM ANTES de cualquier render()
+async function save(id) {
+  // 1. Leer todos los valores del DOM mientras el modal existe
   const datos = {
     estado:          document.getElementById("f-estado").value,
-    ubicacionActual: document.getElementById("f-ubicacion").value.trim(),
-    destino:         document.getElementById("f-destino").value.trim(),
-    horaEmbarque:    document.getElementById("f-horaEmbarque").value.trim(),
-    horaSalida:      document.getElementById("f-horaSalida").value.trim(),
-    gpsLink:         document.getElementById("f-gpsLink").value.trim(),
-    mostrarEnProximos: document.getElementById("f-mostrar").value === "true",
+    ubicacionActual: document.getElementById("f-ubic").value,
+    destino:         document.getElementById("f-dest").value,
+    horaEmbarque:    document.getElementById("f-embarque").value.trim(),
+    horaSalida:      document.getElementById("f-salida").value.trim(),
+    gpsLink:         document.getElementById("f-gps").value.trim(),
     observaciones:   document.getElementById("f-obs").value.trim(),
   };
+
+  // 2. Deshabilitar botón visualmente sin re-renderizar
+  const btn = document.getElementById("btn-save");
+  if (btn) { btn.disabled = true; btn.textContent = "Guardando..."; }
+
   try {
     await update(ref(db, `buses/${id}`), datos);
-    editandoBus = null;
+    editBus = null; // Firebase onValue disparará render() automáticamente
   } catch(e) {
-    alert("Error al guardar. Verifica tu conexión.");
-  } finally {
-    guardando = false; render();
+    alert("Error al guardar. Verifica tu conexión a internet.");
+    if (btn) { btn.disabled = false; btn.textContent = "Guardar cambios"; }
   }
 }
 
-// ── Exponer al HTML ──
-window._vista        = (v) => { vistaActual = v; editandoBus = null; render(); };
-window._filtro       = (f) => { filtroActual = f; render(); };
-window._abrirModal   = (id) => { editandoBus = buses.find(b => b.id === id); render(); };
-window._cerrarModal  = () => { editandoBus = null; render(); };
-window._guardar      = guardar;
-window._clicFuera    = (e) => { if (e.target.id==="modal-overlay") { editandoBus=null; render(); } };
+// ── Exponer ──
+window._filt     = f => { filtro = f; render(); };
+window._edit     = id => { editBus = buses.find(b => b.id === id); render(); };
+window._cerrar   = () => { editBus = null; render(); };
+window._closeMod = e => { if (e.target.id==="overlay") { editBus=null; render(); } };
+window._save     = save;
 </script>
 </body>
 </html>
