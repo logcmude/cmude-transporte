@@ -249,7 +249,7 @@ function htmlProximos() {
         <div class="proximo-hora">${hora}</div>
         <div class="proximo-divider"></div>
         <div class="proximo-data">
-          <div class="proximo-bus">Bus ${String(bus.id).padStart(2,"0")}</div>
+          <div class="proximo-bus">Bus ${String(bus.id).padStart(2,"0")}${bus.placa ? ` · ${bus.placa}` : ""}</div>
           <div class="proximo-ruta">
             ${ic("pin",11)} ${bus.ubicacionActual||"—"}
             ${ic("arrow",11)}
@@ -281,7 +281,10 @@ function htmlCard(bus) {
   return `
     <div class="card ${bus.estado}">
       <div class="card-top">
-        <div class="bus-num">Bus ${String(bus.id).padStart(2,"0")}</div>
+        <div>
+          <div class="bus-num">Bus ${String(bus.id).padStart(2,"0")}</div>
+          ${bus.placa ? `<div style="font-size:11px;font-weight:700;color:var(--texto-muted);letter-spacing:.5px;margin-top:1px">${bus.placa}</div>` : ""}
+        </div>
         <span class="badge-estado ${est.cls}"><span class="dot"></span>${est.label}</span>
       </div>
 
@@ -340,6 +343,10 @@ function htmlModal(bus) {
           <button class="modal-close" onclick="window._cerrar()">${ic("x",14)}</button>
         </div>
 
+        <div class="field">
+          <label>Placa del bus</label>
+          <input type="text" id="f-placa" placeholder="ej: ABC-1234" value="${bus.placa||""}" style="text-transform:uppercase" />
+        </div>
         <div class="field">
           <label>Estado</label>
           <select id="f-estado">${estOpts}</select>
@@ -449,6 +456,7 @@ function render() {
 async function save(id) {
   // 1. Leer todos los valores del DOM mientras el modal existe
   const datos = {
+    placa:           document.getElementById("f-placa").value.trim().toUpperCase(),
     estado:          document.getElementById("f-estado").value,
     ubicacionActual: document.getElementById("f-ubic").value,
     destino:         document.getElementById("f-dest").value,
