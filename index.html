@@ -402,7 +402,16 @@ function htmlModalVol(bus) {
 
       <div class="f">
         <label>Hora de salida</label>
-        <input type="text" id="fv-salida" placeholder="ej: 10:45" value="${bus.horaSalida||""}"/>
+        ${bus.horaSalida
+          ? `<div style="display:flex;align-items:center;gap:8px">
+               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--texto)">${bus.horaSalida}</div>
+               <button onclick="window._clearSalida(${bus.id})" style="padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);background:none;font-size:12px;color:var(--gris);cursor:pointer;font-family:inherit;white-space:nowrap">Borrar</button>
+             </div>`
+          : `<button onclick="window._setSalida(${bus.id})" style="width:100%;padding:11px;border:1.5px solid #86efac;border-radius:var(--r);background:var(--verde-cl);color:var(--verde);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+               🕐 Registrar hora de salida ahora
+             </button>`
+        }
+        <input type="hidden" id="fv-salida" value="${bus.horaSalida||""}"/>
       </div>
 
       <div class="fdiv"></div>
@@ -638,6 +647,22 @@ async function save(id) {
 }
 
 // ── Exponer ──
+window._setSalida  = async (id) => {
+  const hora = new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"});
+  try {
+    await update(ref(db,`buses/${id}`), { horaSalida: hora });
+    // Actualizar el bus local para re-renderizar el modal
+    const b = buses.find(b=>b.id===id);
+    if(b){ b.horaSalida=hora; b._volModal=true; editBus=b; render(); }
+  } catch(e) { alert("Error al guardar."); }
+};
+window._clearSalida = async (id) => {
+  try {
+    await update(ref(db,`buses/${id}`), { horaSalida: "" });
+    const b = buses.find(b=>b.id===id);
+    if(b){ b.horaSalida=""; b._volModal=true; editBus=b; render(); }
+  } catch(e) { alert("Error al guardar."); }
+};
 window._filt       = f => { filtro=f; render(); };
 window._edit       = id => { editBus=buses.find(b=>b.id===id); render(); };
 window._editVol    = id => { editBus=buses.find(b=>b.id===id); editBus._volModal=true; render(); };
