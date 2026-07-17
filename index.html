@@ -219,7 +219,8 @@ let anuncio   = { activo:false, texto:"" };
 let filtro    = "todos";
 let editBus   = null;
 let saving    = false;
-let claveModal= false; // mostrar modal de clave
+let claveModal= false;   // mostrar modal de clave
+let anuncioModal = false; // mostrar modal de anuncio (admin)
 
 // Detectar modo
 if (modoURL === "voluntario") {
@@ -266,16 +267,6 @@ function rutaDeBus(bus) {
   if (bus.rutaId === "otro") return { desde: bus.otroDesde||"—", hasta: bus.otroHasta||"—" };
   const r = RUTAS.find(r => r.id === bus.rutaId);
   return r ? { desde: r.desde, hasta: r.hasta } : { desde:"—", hasta:"—" };
-}
-
-// ── Banner ──
-function htmlBanner() {
-  if (!anuncio.activo || !anuncio.texto) return "";
-  return `<div class="banner-wrap"><div class="banner on">
-    <div class="banner-in">
-      <div class="banner-ic">${ic("mega",17)}</div>
-      <div><div class="banner-tag">Aviso de transporte</div><div class="banner-msg">${anuncio.texto}</div></div>
-    </div></div></div>`;
 }
 
 // ── Próximos ──
@@ -428,7 +419,7 @@ function htmlModalVol(bus) {
   </div>`;
 }
 
-// ── Modal admin ──
+// ── Modal admin (bus) ──
 function htmlModal(bus) {
   const rutaOpts = RUTAS.map(r =>
     `<option value="${r.id}" ${bus.rutaId===r.id?"selected":""}>${r.label}</option>`
@@ -499,6 +490,36 @@ function htmlModal(bus) {
       <div class="modal-btns">
         <button class="btn-c" onclick="window._cerrar()">Cancelar</button>
         <button class="btn-s" id="btn-save" onclick="window._save(${bus.id})">Guardar cambios</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Modal admin (anuncio del banner) ──
+function htmlModalAnuncio() {
+  return `<div class="overlay" id="overlay" onclick="window._closeAnuncioMod(event)">
+    <div class="modal">
+      <div class="handle"></div>
+      <div class="modal-hdr">
+        <span class="modal-title">Anuncio del banner</span>
+        <button class="modal-close" onclick="window._cerrarAnuncio()">${ic("x",14)}</button>
+      </div>
+
+      <div class="f">
+        <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px;font-weight:600;color:var(--texto)">
+          <input type="checkbox" id="f-anuncio-on" ${anuncio.activo?"checked":""} style="width:16px;height:16px"/>
+          Mostrar banner en la página pública
+        </label>
+      </div>
+
+      <div class="f">
+        <label>Texto del anuncio</label>
+        <textarea id="f-anuncio" placeholder="ej: Todos los buses saldrán desde la entrada principal del hotel">${anuncio.texto||""}</textarea>
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn-c" onclick="window._cerrarAnuncio()">Cancelar</button>
+        <button class="btn-s" id="btn-save-anuncio" onclick="window._saveAnuncio()">Guardar</button>
       </div>
     </div>
   </div>`;
@@ -580,10 +601,15 @@ function render() {
       <div class="aviso">${ic("info",14)}
         <div style="margin-left:4px"><strong>Modo administrador.</strong>
         Puedes editar todos los datos de cada bus y el anuncio del banner.</div>
-      </div>` : ""}
+      </div>
+      <button class="adm-edit-btn" style="margin-top:10px" onclick="window._abrirAnuncio()">
+        ${ic("edit",13)} Editar anuncio del banner
+      </button>` : ""}
     </div>
 
-    ${editBus && editBus._volModal ? htmlModalVol(editBus) : editBus ? htmlModal(editBus) : ""}`;
+    ${anuncioModal ? htmlModalAnuncio()
+      : editBus && editBus._volModal ? htmlModalVol(editBus)
+      : editBus ? htmlModal(editBus) : ""}`;
 }
 
 // ── Verificar clave ──
@@ -613,7 +639,7 @@ function toggleOtro() {
   if (wrap) wrap.style.display = sel.value === "otro" ? "block" : "none";
 }
 
-// ── Guardar (admin) ──
+// ── Guardar bus (admin) ──
 async function save(id) {
   const rutaId = document.getElementById("f-ruta").value;
   const datos = {
@@ -627,18 +653,37 @@ async function save(id) {
     gpsLink:      document.getElementById("f-gps").value.trim(),
     observaciones:document.getElementById("f-obs").value.trim(),
   };
-  const anuncioTxt = document.getElementById("f-anuncio").value.trim();
-  const anuncioOn  = document.getElementById("f-anuncio-on").checked;
 
   const btn = document.getElementById("btn-save");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
 
-  editBus = null;
-
   try {
     await update(ref(db,`buses/${id}`), datos);
+    editBus = null;
+    render();
   } catch(e) {
     console.error("Error al guardar:", e);
+    alert("Error al guardar. Verifica tu conexión e intenta de nuevo.");
+    if (btn) { btn.disabled=false; btn.textContent="Guardar cambios"; }
+  }
+}
+
+// ── Guardar anuncio del banner (admin) ──
+async function saveAnuncio() {
+  const texto  = document.getElementById("f-anuncio").value.trim();
+  const activo = document.getElementById("f-anuncio-on").checked;
+
+  const btn = document.getElementById("btn-save-anuncio");
+  if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
+
+  try {
+    await update(ref(db,"anuncio"), { activo, texto });
+    anuncioModal = false;
+    render();
+  } catch(e) {
+    console.error("Error al guardar anuncio:", e);
+    alert("Error al guardar el anuncio. Verifica tu conexión e intenta de nuevo.");
+    if (btn) { btn.disabled=false; btn.textContent="Guardar"; }
   }
 }
 
@@ -647,7 +692,6 @@ window._setSalida  = async (id) => {
   const hora = new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"});
   try {
     await update(ref(db,`buses/${id}`), { horaSalida: hora });
-    // Actualizar el bus local para re-renderizar el modal
     const b = buses.find(b=>b.id===id);
     if(b){ b.horaSalida=hora; b._volModal=true; editBus=b; render(); }
   } catch(e) { alert("Error al guardar."); }
@@ -673,16 +717,23 @@ window._saveVol    = async (id) => {
   };
   const btn = document.getElementById("btn-save");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
-  editBus = null;
   try {
     await update(ref(db,`buses/${id}`), datos);
+    editBus = null;
+    render();
   } catch(e) {
     console.error("Error al guardar:", e);
+    alert("Error al guardar. Verifica tu conexión e intenta de nuevo.");
+    if (btn) { btn.disabled=false; btn.textContent="Guardar"; }
   }
 };
 window._setEstado  = setEstado;
 window._toggleOtro = toggleOtro;
 window._checkClave = checkClave;
+window._abrirAnuncio    = () => { anuncioModal=true; render(); };
+window._cerrarAnuncio   = () => { anuncioModal=false; render(); };
+window._closeAnuncioMod = e => { if(e.target.id==="overlay"){anuncioModal=false;render();} };
+window._saveAnuncio     = saveAnuncio;
 </script>
 </body>
 </html>
