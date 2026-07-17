@@ -19,7 +19,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 @keyframes pulso{0%,100%{opacity:1}50%{opacity:.35}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* HEADER */
+/* HEADER + BANNER sticky juntos */
 .hdr{background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .hdr-in{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;gap:12px}
 .logo{display:flex;align-items:center;gap:9px}
@@ -31,15 +31,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .modo-adm{background:#1e3a8a;color:#fff}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulso 2s infinite;flex-shrink:0}
 
-/* BANNER */
-.banner-wrap{position:sticky;top:54px;z-index:90}
+/* BANNER dentro del header */
 .banner{background:linear-gradient(135deg,#1e3a8a,#1e40af);padding:0 20px;display:none}
 .banner.on{display:block}
-.banner-in{max-width:960px;margin:0 auto;padding:13px 0 15px;display:flex;gap:12px;align-items:flex-start}
-.banner-ic{flex-shrink:0;width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.banner-ic svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.banner-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#93c5fd;margin-bottom:4px}
-.banner-msg{font-size:14px;font-weight:500;color:#fff;line-height:1.5}
+.banner-in{max-width:960px;margin:0 auto;padding:11px 0 13px;display:flex;gap:12px;align-items:flex-start}
+.banner-ic{flex-shrink:0;width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.banner-ic svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.banner-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#93c5fd;margin-bottom:3px}
+.banner-msg{font-size:13px;font-weight:500;color:#fff;line-height:1.5}
 
 /* PRÓXIMOS */
 .prox-sec{background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 20px}
@@ -497,17 +496,6 @@ function htmlModal(bus) {
         <textarea id="f-obs">${bus.observaciones||""}</textarea>
       </div>
 
-      <div class="fdiv"></div>
-
-      <div class="f">
-        <label>📢 Anuncio general (banner)</label>
-        <textarea id="f-anuncio">${anuncio.texto||""}</textarea>
-      </div>
-      <div class="f" style="display:flex;align-items:center;gap:8px">
-        <input type="checkbox" id="f-anuncio-on" ${anuncio.activo?"checked":""} style="width:16px;height:16px;cursor:pointer"/>
-        <label for="f-anuncio-on" style="text-transform:none;font-size:13px;font-weight:500;color:var(--texto);letter-spacing:0;cursor:pointer">Mostrar anuncio a participantes</label>
-      </div>
-
       <div class="modal-btns">
         <button class="btn-c" onclick="window._cerrar()">Cancelar</button>
         <button class="btn-s" id="btn-save" onclick="window._save(${bus.id})">Guardar cambios</button>
@@ -544,17 +532,27 @@ function render() {
   Object.keys(ESTADOS).forEach(k=>{ cnt[k]=buses.filter(b=>b.estado===k).length; });
 
   document.getElementById("app").innerHTML = `
-    <header class="hdr"><div class="hdr-in">
-      <div class="logo">
-        <div class="logo-ic">${ic("bus",18)}</div>
-        <div class="logo-txt">Transporte CMUDE 2026</div>
+    <header class="hdr">
+      <div class="hdr-in">
+        <div class="logo">
+          <div class="logo-ic">${ic("bus",18)}</div>
+          <div class="logo-txt">Transporte CMUDE 2026</div>
+        </div>
+        ${modo==="voluntario" ? `<div class="modo-badge modo-vol">✏️ Voluntario</div>` : ""}
+        ${modo==="admin"      ? `<div class="modo-badge modo-adm">${ic("lock",13)} Admin</div>` : ""}
+        <div class="sync-dot" title="Conectado en tiempo real"></div>
       </div>
-      ${modo==="voluntario" ? `<div class="modo-badge modo-vol">✏️ Voluntario</div>` : ""}
-      ${modo==="admin"      ? `<div class="modo-badge modo-adm">${ic("lock",13)} Admin</div>` : ""}
-      <div class="sync-dot" title="Conectado en tiempo real"></div>
-    </div></header>
-
-    ${htmlBanner()}
+      ${anuncio.activo && anuncio.texto ? `
+        <div class="banner on">
+          <div class="banner-in">
+            <div class="banner-ic">${ic("mega",16)}</div>
+            <div>
+              <div class="banner-tag">Aviso de transporte</div>
+              <div class="banner-msg">${anuncio.texto}</div>
+            </div>
+          </div>
+        </div>` : ""}
+    </header>
     ${modo==="publica" ? htmlProximos() : ""}
 
     <div class="filt-sec"><div class="filt-in">
@@ -617,17 +615,16 @@ function toggleOtro() {
 
 // ── Guardar (admin) ──
 async function save(id) {
-  // Leer DOM ANTES de cualquier render
-  const rutaId     = document.getElementById("f-ruta").value;
+  const rutaId = document.getElementById("f-ruta").value;
   const datos = {
-    placa:       document.getElementById("f-placa").value.trim().toUpperCase(),
-    estado:      document.getElementById("f-estado").value,
+    placa:        document.getElementById("f-placa").value.trim().toUpperCase(),
+    estado:       document.getElementById("f-estado").value,
     rutaId,
-    otroDesde:   rutaId==="otro" ? document.getElementById("f-otro-desde").value.trim() : "",
-    otroHasta:   rutaId==="otro" ? document.getElementById("f-otro-hasta").value.trim() : "",
-    horaEmbarque:document.getElementById("f-embarque").value.trim(),
-    horaSalida:  document.getElementById("f-salida").value.trim(),
-    gpsLink:     document.getElementById("f-gps").value.trim(),
+    otroDesde:    rutaId==="otro" ? document.getElementById("f-otro-desde").value.trim() : "",
+    otroHasta:    rutaId==="otro" ? document.getElementById("f-otro-hasta").value.trim() : "",
+    horaEmbarque: document.getElementById("f-embarque").value.trim(),
+    horaSalida:   document.getElementById("f-salida").value.trim(),
+    gpsLink:      document.getElementById("f-gps").value.trim(),
     observaciones:document.getElementById("f-obs").value.trim(),
   };
   const anuncioTxt = document.getElementById("f-anuncio").value.trim();
@@ -636,13 +633,12 @@ async function save(id) {
   const btn = document.getElementById("btn-save");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
 
+  editBus = null;
+
   try {
     await update(ref(db,`buses/${id}`), datos);
-    await update(ref(db,"anuncio"), { texto:anuncioTxt, activo:anuncioOn });
-    editBus = null;
   } catch(e) {
-    alert("Error al guardar. Verifica tu conexión.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar cambios"; }
+    console.error("Error al guardar:", e);
   }
 }
 
@@ -670,7 +666,6 @@ window._cerrar     = () => { editBus=null; render(); };
 window._closeMod   = e => { if(e.target.id==="overlay"){editBus=null;render();} };
 window._save       = save;
 window._saveVol    = async (id) => {
-  // Leer DOM ANTES de render
   const datos = {
     gpsLink:      document.getElementById("fv-gps").value.trim(),
     horaSalida:   document.getElementById("fv-salida").value.trim(),
@@ -678,12 +673,11 @@ window._saveVol    = async (id) => {
   };
   const btn = document.getElementById("btn-save");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
+  editBus = null;
   try {
     await update(ref(db,`buses/${id}`), datos);
-    editBus=null;
   } catch(e) {
-    alert("Error al guardar. Verifica tu conexión.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar"; }
+    console.error("Error al guardar:", e);
   }
 };
 window._setEstado  = setEstado;
