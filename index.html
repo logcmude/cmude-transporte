@@ -497,6 +497,7 @@ function htmlModal(bus) {
 
 // ── Modal admin (anuncio del banner) ──
 function htmlModalAnuncio() {
+  const publicado = !!anuncio.activo;
   return `<div class="overlay" id="overlay" onclick="window._closeAnuncioMod(event)">
     <div class="modal">
       <div class="handle"></div>
@@ -506,20 +507,34 @@ function htmlModalAnuncio() {
       </div>
 
       <div class="f">
-        <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:13px;font-weight:600;color:var(--texto)">
-          <input type="checkbox" id="f-anuncio-on" ${anuncio.activo?"checked":""} style="width:16px;height:16px"/>
-          Mostrar banner en la página pública
-        </label>
-      </div>
-
-      <div class="f">
         <label>Texto del anuncio</label>
         <textarea id="f-anuncio" placeholder="ej: Todos los buses saldrán desde la entrada principal del hotel">${anuncio.texto||""}</textarea>
+        <div style="font-size:11px;color:var(--gris);margin-top:5px;line-height:1.5">
+          Este texto se guarda como borrador, esté publicado o no. Puedes editarlo sin que se vea todavía en la página pública.
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn-s" id="btn-save-anuncio" style="flex:none;padding:9px 16px;font-size:13px" onclick="window._guardarTextoAnuncio()">Guardar texto</button>
+      </div>
+
+      <div class="fdiv"></div>
+
+      <div class="f" style="margin-bottom:0">
+        <label>Estado de publicación</label>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border:1.5px solid var(--borde);border-radius:var(--r)">
+          <span style="font-size:13px;font-weight:700;color:${publicado?"var(--verde)":"var(--gris)"}">
+            ${publicado ? "🟢 Publicado — visible para todos" : "⚪ Oculto — nadie lo ve"}
+          </span>
+        </div>
+        <button id="btn-toggle-anuncio" onclick="window._togglePublicarAnuncio()"
+          style="width:100%;margin-top:8px;padding:11px;border-radius:var(--r);border:1.5px solid ${publicado?"#fecaca":"#86efac"};background:${publicado?"var(--rojo-cl)":"var(--verde-cl)"};color:${publicado?"var(--rojo)":"var(--verde)"};font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
+          ${publicado ? "Ocultar banner ahora" : "Publicar banner ahora"}
+        </button>
       </div>
 
       <div class="modal-btns">
-        <button class="btn-c" onclick="window._cerrarAnuncio()">Cancelar</button>
-        <button class="btn-s" id="btn-save-anuncio" onclick="window._saveAnuncio()">Guardar</button>
+        <button class="btn-c" style="flex:1" onclick="window._cerrarAnuncio()">Cerrar</button>
       </div>
     </div>
   </div>`;
@@ -668,22 +683,37 @@ async function save(id) {
   }
 }
 
-// ── Guardar anuncio del banner (admin) ──
-async function saveAnuncio() {
-  const texto  = document.getElementById("f-anuncio").value.trim();
-  const activo = document.getElementById("f-anuncio-on").checked;
-
+// ── Guardar solo el texto del anuncio (no cambia si está publicado) ──
+async function guardarTextoAnuncio() {
+  const texto = document.getElementById("f-anuncio").value.trim();
   const btn = document.getElementById("btn-save-anuncio");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
 
   try {
-    await update(ref(db,"anuncio"), { activo, texto });
-    anuncioModal = false;
-    render();
+    await update(ref(db,"anuncio"), { texto });
+    if (btn) { btn.disabled=false; btn.textContent="✓ Guardado"; }
+    setTimeout(()=>{ if(btn){ btn.textContent="Guardar texto"; } }, 1500);
   } catch(e) {
-    console.error("Error al guardar anuncio:", e);
-    alert("Error al guardar el anuncio. Verifica tu conexión e intenta de nuevo.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar"; }
+    console.error("Error al guardar el texto del anuncio:", e);
+    alert("Error al guardar el texto. Verifica tu conexión e intenta de nuevo.");
+    if (btn) { btn.disabled=false; btn.textContent="Guardar texto"; }
+  }
+}
+
+// ── Publicar / ocultar el banner (arrastra también el texto actual del cuadro, por si no se había guardado) ──
+async function togglePublicarAnuncio() {
+  const nuevoEstado = !anuncio.activo;
+  const campoTexto = document.getElementById("f-anuncio");
+  const texto = campoTexto ? campoTexto.value.trim() : (anuncio.texto||"");
+  const btn = document.getElementById("btn-toggle-anuncio");
+  if (btn) { btn.disabled=true; }
+
+  try {
+    await update(ref(db,"anuncio"), { activo: nuevoEstado, texto });
+  } catch(e) {
+    console.error("Error al cambiar publicación del anuncio:", e);
+    alert("Error al actualizar. Verifica tu conexión e intenta de nuevo.");
+    if (btn) { btn.disabled=false; }
   }
 }
 
@@ -730,10 +760,11 @@ window._saveVol    = async (id) => {
 window._setEstado  = setEstado;
 window._toggleOtro = toggleOtro;
 window._checkClave = checkClave;
-window._abrirAnuncio    = () => { anuncioModal=true; render(); };
-window._cerrarAnuncio   = () => { anuncioModal=false; render(); };
-window._closeAnuncioMod = e => { if(e.target.id==="overlay"){anuncioModal=false;render();} };
-window._saveAnuncio     = saveAnuncio;
+window._abrirAnuncio          = () => { anuncioModal=true; render(); };
+window._cerrarAnuncio         = () => { anuncioModal=false; render(); };
+window._closeAnuncioMod       = e => { if(e.target.id==="overlay"){anuncioModal=false;render();} };
+window._guardarTextoAnuncio   = guardarTextoAnuncio;
+window._togglePublicarAnuncio = togglePublicarAnuncio;
 </script>
 </body>
 </html>
