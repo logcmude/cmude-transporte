@@ -38,7 +38,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .banner-ic{flex-shrink:0;width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .banner-ic svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .banner-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#93c5fd;margin-bottom:3px}
-.banner-msg{font-size:13px;font-weight:500;color:#fff;line-height:1.5}
+.banner-msg{font-size:13px;font-weight:500;color:#fff;line-height:1.5;white-space:pre-line}
 
 /* PRÓXIMOS */
 .prox-sec{background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 20px}
@@ -207,6 +207,15 @@ const ESTADOS = {
   finalizado:   { label:"Finalizado",    cls:"e-finalizado"    },
 };
 
+// Orden en que deben aparecer las tarjetas según su estado
+const ESTADO_ORDEN = {
+  esperando:   0,
+  embarcando:  1,
+  en_ruta:     2,
+  finalizado:  3,
+  no_disponible: 4,
+};
+
 // ── Modo desde URL ──
 const params  = new URLSearchParams(window.location.search);
 const modoURL = params.get("modo"); // null | "voluntario" | "admin"
@@ -269,13 +278,44 @@ function rutaDeBus(bus) {
   return r ? { desde: r.desde, hasta: r.hasta } : { desde:"—", hasta:"—" };
 }
 
+// Convierte "7:00" / "07:00" en minutos totales desde medianoche, para comparar horas sin importar el formato en que se escribieron. Devuelve Infinity si no hay hora válida (queda al final al ordenar).
+function horaAMinutos(h) {
+  if (!h) return Infinity;
+  const m = String(h).trim().match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return Infinity;
+  const horas = parseInt(m[1],10);
+  const mins  = parseInt(m[2],10);
+  if (isNaN(horas) || isNaN(mins)) return Infinity;
+  return horas*60 + mins;
+}
+
+// Normaliza una hora escrita a formato HH:MM de 24h (agrega el cero inicial si falta). Si no coincide con el patrón esperado, deja el texto tal cual.
+function normalizarHora(str) {
+  const s = (str||"").trim();
+  const m = s.match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return s;
+  const h = m[1].padStart(2,"0");
+  return `${h}:${m[2]}`;
+}
+
+// Ordena una lista de buses: primero por estado (esperando → embarcando → en ruta → finalizado → no disponible), y dentro del mismo estado por ID.
+function ordenarPorEstado(lista) {
+  return [...lista].sort((a,b) => {
+    const oa = ESTADO_ORDEN[a.estado] ?? 99;
+    const ob = ESTADO_ORDEN[b.estado] ?? 99;
+    if (oa !== ob) return oa - ob;
+    return (a.id||0) - (b.id||0);
+  });
+}
+
 // ── Próximos ──
 function htmlProximos() {
   const ahora  = buses.filter(b => b.estado === "embarcando");
   const pronto = buses.filter(b => b.estado === "esperando" && b.horaEmbarque)
-                      .sort((a,b) => a.horaEmbarque.localeCompare(b.horaEmbarque));
+                      .sort((a,b) => horaAMinutos(a.horaEmbarque) - horaAMinutos(b.horaEmbarque));
   const horaMin = pronto.length ? pronto[0].horaEmbarque : null;
-  const proximos = horaMin ? pronto.filter(b => b.horaEmbarque === horaMin) : [];
+  const minMin  = horaMin ? horaAMinutos(horaMin) : null;
+  const proximos = minMin!==null ? pronto.filter(b => horaAMinutos(b.horaEmbarque) === minMin) : [];
   if (!ahora.length && !proximos.length) return "";
 
   const fila = (bus, tipo) => {
@@ -469,7 +509,8 @@ function htmlModal(bus) {
 
       <div class="f">
         <label>Hora de embarque</label>
-        <input type="text" id="f-embarque" placeholder="ej: 10:00" value="${bus.horaEmbarque||""}"/>
+        <input type="text" id="f-embarque" placeholder="ej: 07:00 (formato 24h)" value="${bus.horaEmbarque||""}"/>
+        <div style="font-size:11px;color:var(--gris);margin-top:5px">Formato 24h, ej: 07:00, 14:30. Se ajusta el cero automáticamente.</div>
       </div>
       <div class="f">
         <label>Hora de salida</label>
@@ -519,7 +560,7 @@ function htmlModalAnuncio() {
         <label>Texto del anuncio</label>
         <textarea id="f-anuncio" placeholder="ej: Todos los buses saldrán desde la entrada principal del hotel">${anuncio.texto||""}</textarea>
         <div style="font-size:11px;color:var(--gris);margin-top:5px;line-height:1.5">
-          Este texto se guarda como borrador, esté publicado o no. Puedes editarlo sin que se vea todavía en la página pública.
+          Este texto se guarda como borrador, esté publicado o no. Puedes usar Enter para hacer saltos de línea; se respetan al mostrarse en el banner.
         </div>
       </div>
 
@@ -572,7 +613,7 @@ function render() {
   }
   if (!buses.length) return;
 
-  const filtrados = filtro==="todos" ? buses : buses.filter(b=>b.estado===filtro);
+  const filtrados = ordenarPorEstado(filtro==="todos" ? buses : buses.filter(b=>b.estado===filtro));
   const cnt = {};
   Object.keys(ESTADOS).forEach(k=>{ cnt[k]=buses.filter(b=>b.estado===k).length; });
 
@@ -672,7 +713,7 @@ async function save(id) {
     rutaId,
     otroDesde:    rutaId==="otro" ? document.getElementById("f-otro-desde").value.trim() : "",
     otroHasta:    rutaId==="otro" ? document.getElementById("f-otro-hasta").value.trim() : "",
-    horaEmbarque: document.getElementById("f-embarque").value.trim(),
+    horaEmbarque: normalizarHora(document.getElementById("f-embarque").value),
     horaSalida:   document.getElementById("f-salida").value.trim(),
     gpsLink:      document.getElementById("f-gps").value.trim(),
     observaciones:document.getElementById("f-obs").value.trim(),
