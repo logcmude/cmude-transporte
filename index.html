@@ -358,8 +358,6 @@ function htmlCard(bus) {
     <div class="meta">
       ${bus.horaEmbarque && !enRuta && !fin ? `
         <div class="mi azul">${ic("clk",13)} Embarque: <strong>${bus.horaEmbarque}</strong></div>` : ""}
-      ${bus.horaInicioEmbarque && (enRuta || fin) ? `
-        <div class="mi">${ic("clk",13)} Inició embarque: <strong>${bus.horaInicioEmbarque}</strong></div>` : ""}
       ${bus.horaSalida ? `
         <div class="mi">${ic("up",13)} Salió: <strong>${bus.horaSalida}</strong></div>` : ""}
       ${bus.horaLlegada ? `
@@ -484,16 +482,17 @@ function htmlModal(bus) {
         <div style="font-size:11px;color:var(--gris);margin-top:5px">Formato 24h, ej: 07:00, 14:30</div>
       </div>
       <div class="f">
+        <label>Hora inicio embarque</label>
+        <input type="text" id="f-inicio-embarque" placeholder="ej: 07:05" value="${bus.horaInicioEmbarque||""}"/>
+      </div>
+      <div class="f">
         <label>Hora de salida</label>
-        ${bus.horaSalida
-          ? `<div style="display:flex;align-items:center;gap:8px">
-               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600">${bus.horaSalida}</div>
-               <button type="button" onclick="window._clearSalida(${bus.id})" style="padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);background:none;font-size:12px;color:var(--gris);cursor:pointer;font-family:inherit;white-space:nowrap">Borrar</button>
-             </div>`
-          : `<button type="button" onclick="window._setSalida(${bus.id})" style="width:100%;padding:11px;border:1.5px solid #86efac;border-radius:var(--r);background:var(--verde-cl);color:var(--verde);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
-               🕐 Registrar hora de salida ahora
-             </button>`}
-        <input type="hidden" id="f-salida" value="${bus.horaSalida||""}"/>
+        <input type="text" id="f-salida" placeholder="ej: 07:20" value="${bus.horaSalida||""}"/>
+      </div>
+      <div class="f">
+        <label>Hora de llegada</label>
+        <input type="text" id="f-llegada" placeholder="ej: 08:05" value="${bus.horaLlegada||""}"/>
+        <div style="font-size:11px;color:var(--gris);margin-top:5px">Estas 3 horas se registran solas al usar los botones de estado, pero puedes corregirlas aquí si alguien se equivocó.</div>
       </div>
       <div class="f">
         <label>Link GPS</label>
@@ -602,7 +601,7 @@ function render() {
           <div class="banner-in">
             <div class="banner-ic">${ic("mega",16)}</div>
             <div>
-              <div class="banner-tag">Aviso de transporte</div>
+              <div class="banner-tag">Avisos de transporte</div>
               <div class="banner-msg">${anuncio.texto}</div>
             </div>
           </div>
@@ -666,12 +665,23 @@ async function setEstado(id, estado) {
   if (!bus) return;
   const datos = { estado };
 
-  // Registrar hora automática según el nuevo estado
-  if (estado === "embarcando" && !bus.horaInicioEmbarque) {
-    datos.horaInicioEmbarque = horaActual();
+  // Cada botón registra (o actualiza) su propia hora, y limpia las horas de
+  // los estados posteriores para que se puedan volver a registrar si el bus
+  // retrocede de estado por error.
+  if (estado === "esperando") {
+    datos.horaInicioEmbarque = "";
+    datos.horaSalida = "";
+    datos.horaLlegada = "";
   }
-  if (estado === "en_ruta" && !bus.horaSalida) {
+  if (estado === "embarcando") {
+    datos.horaInicioEmbarque = horaActual();
+    datos.horaSalida = "";
+    datos.horaLlegada = "";
+  }
+  if (estado === "en_ruta") {
+    if (!bus.horaInicioEmbarque) datos.horaInicioEmbarque = horaActual();
     datos.horaSalida = horaActual();
+    datos.horaLlegada = "";
   }
 
   try { await update(ref(db,`buses/${id}`), datos); }
@@ -681,10 +691,9 @@ async function setEstado(id, estado) {
 async function finalizarBus(id) {
   const bus = buses.find(b=>b.id===id);
   if (!bus) return;
-  const datos = { estado:"finalizado" };
-  if (!bus.horaLlegada) {
-    datos.horaLlegada = horaActual();
-  }
+  const datos = { estado:"finalizado", horaLlegada: horaActual() };
+  if (!bus.horaSalida) datos.horaSalida = horaActual();
+  if (!bus.horaInicioEmbarque) datos.horaInicioEmbarque = bus.horaSalida || horaActual();
   try { await update(ref(db,`buses/${id}`), datos); }
   catch(e) { alert("Error al guardar. Verifica tu conexión."); }
 }
@@ -725,7 +734,9 @@ async function save(id) {
     otroDesde:    rutaId==="otro" ? document.getElementById("f-otro-desde").value.trim() : "",
     otroHasta:    rutaId==="otro" ? document.getElementById("f-otro-hasta").value.trim() : "",
     horaEmbarque: normalizarHora(document.getElementById("f-embarque").value),
-    horaSalida:   document.getElementById("f-salida").value.trim(),
+    horaInicioEmbarque: normalizarHora(document.getElementById("f-inicio-embarque").value),
+    horaSalida:   normalizarHora(document.getElementById("f-salida").value),
+    horaLlegada:  normalizarHora(document.getElementById("f-llegada").value),
     gpsLink:      document.getElementById("f-gps").value.trim(),
     observaciones:document.getElementById("f-obs").value.trim(),
   };
@@ -775,23 +786,6 @@ window._finalizarBus = finalizarBus;
 window._agregarBus = agregarBus;
 window._toggleOtro = toggleOtro;
 window._checkClave = checkClave;
-window._setSalida  = async (id) => {
-  const hora = horaActual();
-  const eraVol = !!(editBus&&editBus._volModal);
-  try {
-    await update(ref(db,`buses/${id}`), { horaSalida:hora });
-    const b=buses.find(b=>b.id===id);
-    if(b){ b.horaSalida=hora; if(eraVol)b._volModal=true; editBus=b; render(); }
-  } catch(e) { alert("Error al guardar."); }
-};
-window._clearSalida = async (id) => {
-  const eraVol = !!(editBus&&editBus._volModal);
-  try {
-    await update(ref(db,`buses/${id}`), { horaSalida:"" });
-    const b=buses.find(b=>b.id===id);
-    if(b){ b.horaSalida=""; if(eraVol)b._volModal=true; editBus=b; render(); }
-  } catch(e) { alert("Error al guardar."); }
-};
 window._abrirAnuncio          = () => { anuncioModal=true; render(); };
 window._cerrarAnuncio         = () => { anuncioModal=false; render(); };
 window._closeAnuncioMod       = e => { if(e.target.id==="overlay"){anuncioModal=false;render();} };
