@@ -19,7 +19,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 @keyframes pulso{0%,100%{opacity:1}50%{opacity:.35}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* HEADER + BANNER sticky juntos */
 .hdr{background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .hdr-in{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:54px;gap:12px}
 .logo{display:flex;align-items:center;gap:9px}
@@ -30,8 +29,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .modo-vol{background:var(--naranja-cl);color:var(--naranja)}
 .modo-adm{background:#1e3a8a;color:#fff}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pulso 2s infinite;flex-shrink:0}
-
-/* BANNER dentro del header */
 .banner{background:linear-gradient(135deg,#1e3a8a,#1e40af);padding:0 20px;display:none}
 .banner.on{display:block}
 .banner-in{max-width:960px;margin:0 auto;padding:11px 0 13px;display:flex;gap:12px;align-items:flex-start}
@@ -40,7 +37,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .banner-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#93c5fd;margin-bottom:3px}
 .banner-msg{font-size:13px;font-weight:500;color:#fff;line-height:1.5;white-space:pre-line}
 
-/* PRÓXIMOS */
 .prox-sec{background:var(--blanco);border-bottom:1px solid var(--borde);padding:0 20px}
 .prox-in{max-width:960px;margin:0 auto;padding:11px 0}
 .sec-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--gris);margin-bottom:8px;display:flex;align-items:center;gap:5px}
@@ -61,7 +57,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .prox-row.ahora .prox-pill{background:var(--verde);color:#fff}
 .prox-row.pronto .prox-pill{background:var(--azul);color:#fff}
 
-/* FILTROS */
 .filt-sec{padding:0 20px}
 .filt-in{max-width:960px;margin:0 auto;padding:13px 0 9px;display:flex;gap:6px;flex-wrap:wrap}
 .fb{padding:5px 12px;border-radius:20px;border:1px solid var(--borde);background:var(--blanco);font-size:12px;font-weight:500;color:var(--gris);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
@@ -71,14 +66,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .fb.on .ct{background:rgba(255,255,255,.25)}
 .fb:not(.on) .ct{background:var(--gris-cl);color:var(--gris)}
 
-/* GRID */
 .main{max-width:960px;margin:0 auto;padding:14px 20px 40px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
 
-/* TARJETAS — colores por estado */
 .card{border-radius:var(--rlg);padding:16px;border:1.5px solid var(--borde);background:var(--blanco);transition:box-shadow .15s}
 .card:hover{box-shadow:0 3px 12px rgba(0,0,0,.08)}
-
 .card.esperando{background:var(--blanco);border-color:var(--borde)}
 .card.embarcando{background:#f0fdf4;border-color:#86efac}
 .card.en_ruta{background:#eff6ff;border-color:#93c5fd}
@@ -86,12 +78,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .card.no_disponible{background:#f9fafb;border-color:var(--borde);opacity:.45}
 
 .card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-
-/* Placa como título principal */
 .card-placa{font-size:17px;font-weight:800;letter-spacing:.3px;color:var(--texto)}
 .card-num{font-size:11px;color:var(--gris);margin-top:2px;font-weight:500}
-
-/* badge estado */
 .est{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
 .est .dot{width:6px;height:6px;border-radius:50%}
 .e-esperando{background:#f3f4f6;color:#374151} .e-esperando .dot{background:#9ca3af}
@@ -100,23 +88,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .e-finalizado{background:#f3f4f6;color:#6b7280} .e-finalizado .dot{background:#d1d5db}
 .e-no_disponible{background:#1f2937;color:#9ca3af} .e-no_disponible .dot{background:#4b5563}
 
-/* ruta */
 .ruta{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.03);border:1px solid var(--borde);border-radius:var(--r);padding:9px 11px;margin-bottom:10px}
 .ruta-col{flex:1;min-width:0}
 .ruta-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--gris);margin-bottom:2px}
 .ruta-val{font-size:12px;font-weight:700;color:var(--texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ruta-col.r{text-align:right}
 .ruta-arr{flex-shrink:0;color:#9ca3af}
-
-/* meta */
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
 .mi{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--gris)}
 .mi strong{color:var(--texto);font-weight:600}
 .mi.azul{color:var(--azul-tx)} .mi.azul strong{color:var(--azul-tx)}
 .gps-a{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:5px 11px;border-radius:8px;background:var(--azul-cl);color:var(--azul-tx);font-size:12px;font-weight:700;text-decoration:none}
 .obs{margin-top:9px;padding:7px 10px;background:var(--naranja-cl);color:var(--naranja);border-radius:8px;font-size:12px;display:flex;gap:6px;align-items:flex-start;line-height:1.4}
+.duracion{margin-top:8px;padding:7px 10px;background:var(--gris-cl);color:var(--gris);border-radius:8px;font-size:12px;display:flex;gap:6px;align-items:center}
 
-/* BOTONES DE ESTADO — modo voluntario */
 .estado-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
 .eb{padding:9px 6px;border-radius:9px;border:1.5px solid;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;font-family:inherit}
 .eb:active{transform:scale(.96)}
@@ -126,7 +111,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .eb-fin{border-color:#d1d5db;background:#f9fafb;color:#6b7280}
 .eb.activo{box-shadow:inset 0 0 0 2px currentColor}
 
-/* MODAL ADMIN */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center;z-index:200}
 @media(min-width:600px){.overlay{align-items:center;padding:16px}}
 .modal{background:var(--blanco);border-radius:18px 18px 0 0;width:100%;max-width:440px;max-height:93vh;overflow-y:auto;padding:20px}
@@ -147,16 +131,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn-s{flex:2;padding:11px;border-radius:var(--r);border:none;background:var(--azul);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
 .btn-s:hover{background:#1e40af}
 .btn-s:disabled{background:#93c5fd;cursor:not-allowed}
-
-/* ADMIN extras */
 .adm-edit-btn{width:100%;margin-top:11px;padding:7px;border-radius:8px;border:1px solid var(--borde);background:none;font-size:12px;font-weight:600;color:var(--gris);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;font-family:inherit}
 .adm-edit-btn:hover{background:var(--gris-cl);color:var(--texto)}
-
-/* AVISO */
 .aviso{margin-top:20px;padding:12px 14px;background:var(--naranja-cl);border-radius:var(--rlg);border:1px solid #fcd34d;font-size:12px;color:var(--naranja);line-height:1.5;display:flex;gap:8px}
 .vacio{grid-column:1/-1;text-align:center;padding:40px;color:var(--gris)}
+.btn-agregar{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:16px;padding:13px;border-radius:var(--rlg);border:2px dashed var(--borde);background:none;font-size:13px;font-weight:600;color:var(--gris);cursor:pointer;transition:all .15s;font-family:inherit}
+.btn-agregar:hover{border-color:var(--azul);color:var(--azul);background:var(--azul-cl)}
 
-/* CLAVE modal */
 .clave-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:300;padding:20px}
 .clave-box{background:var(--blanco);border-radius:var(--rlg);padding:28px;width:100%;max-width:340px;text-align:center}
 .clave-title{font-size:17px;font-weight:700;margin-bottom:6px}
@@ -168,8 +149,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 @media(max-width:600px){
   .main{padding:12px 12px 40px}
-  .filt-sec,.prox-sec,.banner{padding:0 12px}
-  .filt-sec{padding:0 12px}
+  .filt-sec,.prox-sec{padding:0 12px}
 }
 </style>
 </head>
@@ -183,7 +163,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, onValue, update, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const app = initializeApp({ databaseURL:"https://cmude-transporte-2026-default-rtdb.firebaseio.com" });
 const db  = getDatabase(app);
@@ -191,12 +171,12 @@ const db  = getDatabase(app);
 const CLAVE_ADMIN = "cmude2026";
 
 const RUTAS = [
-  { id:"hc_usfq",  label:"Hotel Hilton Colón → USFQ",           desde:"Hotel Hilton Colón", hasta:"USFQ"              },
-  { id:"hc_uasb",  label:"Hotel Hilton Colón → UASB-E",          desde:"Hotel Hilton Colón", hasta:"UASB-E"             },
-  { id:"usfq_hc",  label:"USFQ → Hotel Hilton Colón",            desde:"USFQ",               hasta:"Hotel Hilton Colón" },
-  { id:"uasb_hc",  label:"UASB-E → Hotel Hilton Colón",          desde:"UASB-E",             hasta:"Hotel Hilton Colón" },
-  { id:"uasb_usfq",label:"UASB-E → USFQ",                        desde:"UASB-E",             hasta:"USFQ"              },
-  { id:"otro",     label:"Otro (especificar)",                    desde:"",                   hasta:""                  },
+  { id:"hc_usfq",   label:"Hotel Hilton Colón → USFQ",  desde:"Hotel Hilton Colón", hasta:"USFQ"              },
+  { id:"hc_uasb",   label:"Hotel Hilton Colón → UASB-E", desde:"Hotel Hilton Colón", hasta:"UASB-E"             },
+  { id:"usfq_hc",   label:"USFQ → Hotel Hilton Colón",   desde:"USFQ",               hasta:"Hotel Hilton Colón" },
+  { id:"uasb_hc",   label:"UASB-E → Hotel Hilton Colón", desde:"UASB-E",             hasta:"Hotel Hilton Colón" },
+  { id:"uasb_usfq", label:"UASB-E → USFQ",               desde:"UASB-E",             hasta:"USFQ"              },
+  { id:"otro",      label:"Otro (especificar)",           desde:"",                   hasta:""                  },
 ];
 
 const ESTADOS = {
@@ -207,42 +187,27 @@ const ESTADOS = {
   finalizado:   { label:"Finalizado",    cls:"e-finalizado"    },
 };
 
-// Orden en que deben aparecer las tarjetas según su estado
-const ESTADO_ORDEN = {
-  esperando:   0,
-  embarcando:  1,
-  en_ruta:     2,
-  finalizado:  3,
-  no_disponible: 4,
-};
+const ESTADO_ORDEN = { esperando:0, embarcando:1, en_ruta:2, finalizado:3, no_disponible:4 };
 
-// ── Modo desde URL ──
-const params  = new URLSearchParams(window.location.search);
-const modoURL = params.get("modo"); // null | "voluntario" | "admin"
-const claveURL= params.get("clave");
+const params   = new URLSearchParams(window.location.search);
+const modoURL  = params.get("modo");
+const claveURL = params.get("clave");
 
-let modo      = "publica"; // publica | voluntario | admin
-let claveOk   = false;
-let buses     = [];
-let anuncio   = { activo:false, texto:"" };
-let filtro    = "todos";
-let editBus   = null;
-let saving    = false;
-let claveModal= false;   // mostrar modal de clave
-let anuncioModal = false; // mostrar modal de anuncio (admin)
+let modo       = "publica";
+let buses      = [];
+let anuncio    = { activo:false, texto:"" };
+let filtro     = "todos";
+let editBus    = null;
+let claveModal = false;
+let anuncioModal = false;
 
-// Detectar modo
 if (modoURL === "voluntario") {
   modo = "voluntario";
 } else if (modoURL === "admin") {
-  if (claveURL === CLAVE_ADMIN) {
-    modo = "admin"; claveOk = true;
-  } else {
-    claveModal = true; // pedir clave
-  }
+  if (claveURL === CLAVE_ADMIN) { modo = "admin"; }
+  else { claveModal = true; }
 }
 
-// ── Firebase ──
 onValue(ref(db,"buses"), snap => {
   const d = snap.val();
   buses = d ? Object.values(d).sort((a,b)=>a.id-b.id) : [];
@@ -253,7 +218,6 @@ onValue(ref(db,"anuncio"), snap => {
   render();
 });
 
-// ── SVGs ──
 const S = {
   bus:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M2 10h20M7 18v2M17 18v2"/></svg>`,
   mega: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>`,
@@ -267,48 +231,53 @@ const S = {
   x:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
   info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
   lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+  timer:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
 };
 const ic = (n,s=16) => `<span style="display:inline-flex;align-items:center;width:${s}px;height:${s}px;flex-shrink:0">${S[n]}</span>`;
 
-// ── Helpers ──
 function rutaDeBus(bus) {
-  if (!bus.rutaId) return { desde: bus.desde||"—", hasta: bus.hasta||"—" };
-  if (bus.rutaId === "otro") return { desde: bus.otroDesde||"—", hasta: bus.otroHasta||"—" };
+  if (!bus.rutaId) return { desde:bus.desde||"—", hasta:bus.hasta||"—" };
+  if (bus.rutaId === "otro") return { desde:bus.otroDesde||"—", hasta:bus.otroHasta||"—" };
   const r = RUTAS.find(r => r.id === bus.rutaId);
-  return r ? { desde: r.desde, hasta: r.hasta } : { desde:"—", hasta:"—" };
+  return r ? { desde:r.desde, hasta:r.hasta } : { desde:"—", hasta:"—" };
 }
 
-// Convierte "7:00" / "07:00" en minutos totales desde medianoche, para comparar horas sin importar el formato en que se escribieron. Devuelve Infinity si no hay hora válida (queda al final al ordenar).
 function horaAMinutos(h) {
   if (!h) return Infinity;
   const m = String(h).trim().match(/^(\d{1,2}):(\d{2})$/);
   if (!m) return Infinity;
-  const horas = parseInt(m[1],10);
-  const mins  = parseInt(m[2],10);
-  if (isNaN(horas) || isNaN(mins)) return Infinity;
-  return horas*60 + mins;
+  return parseInt(m[1],10)*60 + parseInt(m[2],10);
 }
 
-// Normaliza una hora escrita a formato HH:MM de 24h (agrega el cero inicial si falta). Si no coincide con el patrón esperado, deja el texto tal cual.
 function normalizarHora(str) {
   const s = (str||"").trim();
   const m = s.match(/^(\d{1,2}):(\d{2})$/);
   if (!m) return s;
-  const h = m[1].padStart(2,"0");
-  return `${h}:${m[2]}`;
+  return `${m[1].padStart(2,"0")}:${m[2]}`;
 }
 
-// Ordena una lista de buses: primero por estado (esperando → embarcando → en ruta → finalizado → no disponible), y dentro del mismo estado por ID.
+function horaActual() {
+  return new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"});
+}
+
+// Calcula duración en minutos entre dos strings "HH:MM"
+function calcDuracion(inicio, fin) {
+  const a = horaAMinutos(inicio);
+  const b = horaAMinutos(fin);
+  if (a === Infinity || b === Infinity) return null;
+  const diff = b - a;
+  return diff >= 0 ? diff : null;
+}
+
 function ordenarPorEstado(lista) {
   return [...lista].sort((a,b) => {
     const oa = ESTADO_ORDEN[a.estado] ?? 99;
     const ob = ESTADO_ORDEN[b.estado] ?? 99;
-    if (oa !== ob) return oa - ob;
-    return (a.id||0) - (b.id||0);
+    return oa !== ob ? oa - ob : (a.id||0) - (b.id||0);
   });
 }
 
-// ── Próximos ──
 function htmlProximos() {
   const ahora  = buses.filter(b => b.estado === "embarcando");
   const pronto = buses.filter(b => b.estado === "esperando" && b.horaEmbarque)
@@ -341,14 +310,24 @@ function htmlProximos() {
     </div></div></div>`;
 }
 
-// ── Tarjeta ──
 function htmlCard(bus) {
   const est    = ESTADOS[bus.estado] || ESTADOS.no_disponible;
   const noDisp = bus.estado === "no_disponible";
   const enRuta = bus.estado === "en_ruta";
+  const fin    = bus.estado === "finalizado";
   const { desde, hasta } = rutaDeBus(bus);
   const esVol  = modo === "voluntario";
   const esAdm  = modo === "admin";
+
+  // Duración embarque: horaInicioEmbarque → horaSalida
+  const durEmbarque = bus.horaInicioEmbarque && bus.horaSalida
+    ? calcDuracion(bus.horaInicioEmbarque, bus.horaSalida)
+    : null;
+
+  // Duración trayecto: horaSalida → horaLlegada
+  const durTrayecto = bus.horaSalida && bus.horaLlegada
+    ? calcDuracion(bus.horaSalida, bus.horaLlegada)
+    : null;
 
   return `<div class="card ${bus.estado}">
     <div class="card-top">
@@ -373,13 +352,29 @@ function htmlCard(bus) {
     </div>
 
     <div class="meta">
-      ${bus.horaEmbarque && !enRuta && bus.estado!=="finalizado" ? `
+      ${bus.horaEmbarque && !enRuta && !fin ? `
         <div class="mi azul">${ic("clk",13)} Embarque: <strong>${bus.horaEmbarque}</strong></div>` : ""}
+      ${bus.horaInicioEmbarque && (enRuta || fin) ? `
+        <div class="mi">${ic("clk",13)} Inició embarque: <strong>${bus.horaInicioEmbarque}</strong></div>` : ""}
       ${bus.horaSalida ? `
         <div class="mi">${ic("up",13)} Salió: <strong>${bus.horaSalida}</strong></div>` : ""}
-      ${!bus.horaEmbarque && !bus.horaSalida ? `
+      ${bus.horaLlegada ? `
+        <div class="mi">${ic("pin",13)} Llegó: <strong>${bus.horaLlegada}</strong></div>` : ""}
+      ${!bus.horaEmbarque && !bus.horaInicioEmbarque && !bus.horaSalida ? `
         <div class="mi" style="color:#9ca3af">${ic("clk",13)} Sin horario aún</div>` : ""}
     </div>
+
+    ${durEmbarque !== null || durTrayecto !== null ? `
+      <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px">
+        ${durEmbarque !== null ? `
+          <div class="duracion">${ic("timer",13)} Embarque: <strong style="margin-left:3px">${durEmbarque} min</strong>
+            <span style="font-size:11px;color:var(--gris);margin-left:3px">(${bus.horaInicioEmbarque} → ${bus.horaSalida})</span>
+          </div>` : ""}
+        ${durTrayecto !== null ? `
+          <div class="duracion">${ic("timer",13)} Trayecto: <strong style="margin-left:3px">${durTrayecto} min</strong>
+            <span style="font-size:11px;color:var(--gris);margin-left:3px">(${bus.horaSalida} → ${bus.horaLlegada})</span>
+          </div>` : ""}
+      </div>` : ""}
 
     ${enRuta && bus.gpsLink ? `
       <a href="${bus.gpsLink}" target="_blank" class="gps-a">${ic("gps",13)} Ubicación en tiempo real</a>` : ""}
@@ -396,7 +391,7 @@ function htmlCard(bus) {
         <button class="eb eb-rut ${bus.estado==="en_ruta"?"activo":""}"
           onclick="window._setEstado(${bus.id},'en_ruta')">🔵 En ruta</button>
         <button class="eb eb-fin ${bus.estado==="finalizado"?"activo":""}"
-          onclick="window._setEstado(${bus.id},'finalizado')">✅ Finalizado</button>
+          onclick="window._finalizarBus(${bus.id})">✅ Finalizado</button>
       </div>
       <button class="adm-edit-btn" style="margin-top:8px" onclick="window._editVol(${bus.id})">
         ${ic("edit",13)} GPS, hora de salida y observaciones
@@ -409,7 +404,6 @@ function htmlCard(bus) {
   </div>`;
 }
 
-// ── Modal voluntaria (GPS + observaciones) ──
 function htmlModalVol(bus) {
   return `<div class="overlay" id="overlay" onclick="window._closeMod(event)">
     <div class="modal">
@@ -418,39 +412,31 @@ function htmlModalVol(bus) {
         <span class="modal-title">${bus.placa || `Bus ${String(bus.id).padStart(2,"0")}`}</span>
         <button class="modal-close" onclick="window._cerrar()">${ic("x",14)}</button>
       </div>
-
       <div class="f">
         <label>Link GPS — ubicación en tiempo real</label>
-        <input type="text" id="fv-gps" placeholder="Pega aquí el link de WhatsApp o Google Maps"
-          value="${bus.gpsLink||""}" style="font-size:13px"/>
+        <input type="text" id="fv-gps" placeholder="Pega aquí el link de Google Maps" value="${bus.gpsLink||""}" style="font-size:13px"/>
         <div style="font-size:11px;color:var(--gris);margin-top:5px;line-height:1.5">
           📍 Google Maps → tu foto de perfil → "Compartir ubicación" → selecciona duración → "Copiar link" → pega aquí.
         </div>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f">
         <label>Hora de salida</label>
         ${bus.horaSalida
           ? `<div style="display:flex;align-items:center;gap:8px">
-               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--texto)">${bus.horaSalida}</div>
+               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600">${bus.horaSalida}</div>
                <button onclick="window._clearSalida(${bus.id})" style="padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);background:none;font-size:12px;color:var(--gris);cursor:pointer;font-family:inherit;white-space:nowrap">Borrar</button>
              </div>`
           : `<button onclick="window._setSalida(${bus.id})" style="width:100%;padding:11px;border:1.5px solid #86efac;border-radius:var(--r);background:var(--verde-cl);color:var(--verde);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
                🕐 Registrar hora de salida ahora
-             </button>`
-        }
+             </button>`}
         <input type="hidden" id="fv-salida" value="${bus.horaSalida||""}"/>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f">
         <label>Observaciones</label>
         <textarea id="fv-obs" placeholder="ej: Retrasados por tráfico en Av. Naciones Unidas">${bus.observaciones||""}</textarea>
       </div>
-
       <div class="modal-btns">
         <button class="btn-c" onclick="window._cerrar()">Cancelar</button>
         <button class="btn-s" id="btn-save" onclick="window._saveVol(${bus.id})">Guardar</button>
@@ -459,7 +445,6 @@ function htmlModalVol(bus) {
   </div>`;
 }
 
-// ── Modal admin (bus) ──
 function htmlModal(bus) {
   const rutaOpts = RUTAS.map(r =>
     `<option value="${r.id}" ${bus.rutaId===r.id?"selected":""}>${r.label}</option>`
@@ -473,7 +458,6 @@ function htmlModal(bus) {
         <span class="modal-title">${bus.placa || `Bus ${String(bus.id).padStart(2,"0")}`}</span>
         <button class="modal-close" onclick="window._cerrar()">${ic("x",14)}</button>
       </div>
-
       <div class="f">
         <label>Placa</label>
         <input type="text" id="f-placa" placeholder="ej: ABC-1234" value="${bus.placa||""}" style="text-transform:uppercase"/>
@@ -484,9 +468,7 @@ function htmlModal(bus) {
           ${Object.entries(ESTADOS).map(([k,v])=>`<option value="${k}" ${bus.estado===k?"selected":""}>${v.label}</option>`).join("")}
         </select>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f">
         <label>Ruta</label>
         <select id="f-ruta" onchange="window._toggleOtro()">
@@ -504,39 +486,33 @@ function htmlModal(bus) {
           <input type="text" id="f-otro-hasta" placeholder="ej: Terminal Terrestre" value="${bus.otroHasta||""}"/>
         </div>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f">
         <label>Hora de embarque</label>
-        <input type="text" id="f-embarque" placeholder="ej: 07:00 (formato 24h)" value="${bus.horaEmbarque||""}"/>
-        <div style="font-size:11px;color:var(--gris);margin-top:5px">Formato 24h, ej: 07:00, 14:30. Se ajusta el cero automáticamente.</div>
+        <input type="text" id="f-embarque" placeholder="ej: 07:00" value="${bus.horaEmbarque||""}"/>
+        <div style="font-size:11px;color:var(--gris);margin-top:5px">Formato 24h, ej: 07:00, 14:30</div>
       </div>
       <div class="f">
         <label>Hora de salida</label>
         ${bus.horaSalida
           ? `<div style="display:flex;align-items:center;gap:8px">
-               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600;color:var(--texto)">${bus.horaSalida}</div>
+               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600">${bus.horaSalida}</div>
                <button type="button" onclick="window._clearSalida(${bus.id})" style="padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);background:none;font-size:12px;color:var(--gris);cursor:pointer;font-family:inherit;white-space:nowrap">Borrar</button>
              </div>`
           : `<button type="button" onclick="window._setSalida(${bus.id})" style="width:100%;padding:11px;border:1.5px solid #86efac;border-radius:var(--r);background:var(--verde-cl);color:var(--verde);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
                🕐 Registrar hora de salida ahora
-             </button>`
-        }
+             </button>`}
         <input type="hidden" id="f-salida" value="${bus.horaSalida||""}"/>
       </div>
       <div class="f">
         <label>Link GPS</label>
         <input type="text" id="f-gps" placeholder="https://maps.app.goo.gl/..." value="${bus.gpsLink||""}"/>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f">
         <label>Observaciones</label>
         <textarea id="f-obs">${bus.observaciones||""}</textarea>
       </div>
-
       <div class="modal-btns">
         <button class="btn-c" onclick="window._cerrar()">Cancelar</button>
         <button class="btn-s" id="btn-save" onclick="window._save(${bus.id})">Guardar cambios</button>
@@ -545,7 +521,6 @@ function htmlModal(bus) {
   </div>`;
 }
 
-// ── Modal admin (anuncio del banner) ──
 function htmlModalAnuncio() {
   const publicado = !!anuncio.activo;
   return `<div class="overlay" id="overlay" onclick="window._closeAnuncioMod(event)">
@@ -555,21 +530,14 @@ function htmlModalAnuncio() {
         <span class="modal-title">Anuncio del banner</span>
         <button class="modal-close" onclick="window._cerrarAnuncio()">${ic("x",14)}</button>
       </div>
-
       <div class="f">
         <label>Texto del anuncio</label>
         <textarea id="f-anuncio" placeholder="ej: Todos los buses saldrán desde la entrada principal del hotel">${anuncio.texto||""}</textarea>
-        <div style="font-size:11px;color:var(--gris);margin-top:5px;line-height:1.5">
-          Este texto se guarda como borrador, esté publicado o no. Puedes usar Enter para hacer saltos de línea; se respetan al mostrarse en el banner.
-        </div>
       </div>
-
       <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
         <button class="btn-s" id="btn-save-anuncio" style="flex:none;padding:9px 16px;font-size:13px" onclick="window._guardarTextoAnuncio()">Guardar texto</button>
       </div>
-
       <div class="fdiv"></div>
-
       <div class="f" style="margin-bottom:0">
         <label>Estado de publicación</label>
         <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border:1.5px solid var(--borde);border-radius:var(--r)">
@@ -582,7 +550,6 @@ function htmlModalAnuncio() {
           ${publicado ? "Ocultar banner ahora" : "Publicar banner ahora"}
         </button>
       </div>
-
       <div class="modal-btns">
         <button class="btn-c" style="flex:1" onclick="window._cerrarAnuncio()">Cerrar</button>
       </div>
@@ -590,7 +557,6 @@ function htmlModalAnuncio() {
   </div>`;
 }
 
-// ── Modal clave admin ──
 function htmlClaveModal() {
   return `<div class="clave-overlay">
     <div class="clave-box">
@@ -605,7 +571,6 @@ function htmlClaveModal() {
   </div>`;
 }
 
-// ── Render principal ──
 function render() {
   if (claveModal) {
     document.getElementById("app").innerHTML = htmlClaveModal();
@@ -613,9 +578,22 @@ function render() {
   }
   if (!buses.length) return;
 
-  const filtrados = ordenarPorEstado(filtro==="todos" ? buses : buses.filter(b=>b.estado===filtro));
+  // Vista pública: ocultar no_disponible
+  const busesVisibles = modo === "publica"
+    ? buses.filter(b => b.estado !== "no_disponible")
+    : buses;
+
+  const filtrados = ordenarPorEstado(
+    filtro === "todos" ? busesVisibles : busesVisibles.filter(b => b.estado === filtro)
+  );
+
   const cnt = {};
-  Object.keys(ESTADOS).forEach(k=>{ cnt[k]=buses.filter(b=>b.estado===k).length; });
+  Object.keys(ESTADOS).forEach(k => { cnt[k] = busesVisibles.filter(b=>b.estado===k).length; });
+
+  // Filtros visibles según modo
+  const estadosFiltro = modo === "publica"
+    ? Object.entries(ESTADOS).filter(([k]) => k !== "no_disponible")
+    : Object.entries(ESTADOS);
 
   document.getElementById("app").innerHTML = `
     <header class="hdr">
@@ -639,37 +617,45 @@ function render() {
           </div>
         </div>` : ""}
     </header>
+
     ${modo==="publica" ? htmlProximos() : ""}
 
     <div class="filt-sec"><div class="filt-in">
       <button class="fb ${filtro==="todos"?"on":""}" onclick="window._filt('todos')">
-        Todos <span class="ct">${buses.length}</span>
+        Todos <span class="ct">${busesVisibles.length}</span>
       </button>
-      ${Object.entries(ESTADOS).map(([k,v])=>`
+      ${estadosFiltro.map(([k,v])=>`
         <button class="fb ${filtro===k?"on":""}" onclick="window._filt('${k}')">
-          ${v.label} <span class="ct">${cnt[k]}</span>
+          ${v.label} <span class="ct">${cnt[k]||0}</span>
         </button>`).join("")}
     </div></div>
 
-    <div class="main"><div class="grid">
-      ${filtrados.length
-        ? filtrados.map(htmlCard).join("")
-        : `<div class="vacio">No hay buses en este estado.</div>`}
-    </div>
-    ${modo==="voluntario" ? `
-      <div class="aviso">${ic("info",14)}
-        <div style="margin-left:4px"><strong>Modo voluntario.</strong>
-        Usa los botones de cada tarjeta para cambiar el estado de tu bus.
-        Los cambios se reflejan al instante para todas las participantes.</div>
-      </div>` : ""}
-    ${modo==="admin" ? `
-      <div class="aviso">${ic("info",14)}
-        <div style="margin-left:4px"><strong>Modo administrador.</strong>
-        Puedes editar todos los datos de cada bus y el anuncio del banner.</div>
+    <div class="main">
+      <div class="grid">
+        ${filtrados.length
+          ? filtrados.map(htmlCard).join("")
+          : `<div class="vacio">No hay buses en este estado.</div>`}
       </div>
-      <button class="adm-edit-btn" style="margin-top:10px" onclick="window._abrirAnuncio()">
-        ${ic("edit",13)} Editar anuncio del banner
-      </button>` : ""}
+
+      ${modo==="admin" ? `
+        <button class="btn-agregar" onclick="window._agregarBus()">
+          ${ic("plus",16)} Agregar bus
+        </button>` : ""}
+
+      ${modo==="voluntario" ? `
+        <div class="aviso">${ic("info",14)}
+          <div style="margin-left:4px"><strong>Modo voluntario.</strong>
+          Usa los botones de cada tarjeta para cambiar el estado de tu bus.</div>
+        </div>` : ""}
+
+      ${modo==="admin" ? `
+        <div class="aviso" style="margin-top:12px">${ic("info",14)}
+          <div style="margin-left:4px"><strong>Modo administrador.</strong>
+          Edita datos de cada bus y gestiona el anuncio del banner.</div>
+        </div>
+        <button class="adm-edit-btn" style="margin-top:10px" onclick="window._abrirAnuncio()">
+          ${ic("edit",13)} Editar anuncio del banner
+        </button>` : ""}
     </div>
 
     ${anuncioModal ? htmlModalAnuncio()
@@ -677,34 +663,68 @@ function render() {
       : editBus ? htmlModal(editBus) : ""}`;
 }
 
-// ── Verificar clave ──
+// ── Lógica ──
 function checkClave() {
   const val = document.getElementById("clave-inp").value;
-  if (val === CLAVE_ADMIN) {
-    modo = "admin"; claveModal = false; claveOk = true;
-    render();
-  } else {
-    document.getElementById("clave-err").style.display = "block";
-  }
+  if (val === CLAVE_ADMIN) { modo="admin"; claveModal=false; render(); }
+  else { document.getElementById("clave-err").style.display="block"; }
 }
 
-// ── Cambiar estado rápido (voluntario) ──
 async function setEstado(id, estado) {
+  const bus = buses.find(b=>b.id===id);
+  if (!bus) return;
+  const datos = { estado };
+
+  // Registrar hora automática según el nuevo estado
+  if (estado === "embarcando" && !bus.horaInicioEmbarque) {
+    datos.horaInicioEmbarque = horaActual();
+  }
+  if (estado === "en_ruta" && !bus.horaSalida) {
+    datos.horaSalida = horaActual();
+  }
+
+  try { await update(ref(db,`buses/${id}`), datos); }
+  catch(e) { alert("Error al guardar. Verifica tu conexión."); }
+}
+
+async function finalizarBus(id) {
+  const bus = buses.find(b=>b.id===id);
+  if (!bus) return;
+  const datos = { estado:"finalizado" };
+  if (!bus.horaLlegada) {
+    datos.horaLlegada = horaActual();
+  }
+  try { await update(ref(db,`buses/${id}`), datos); }
+  catch(e) { alert("Error al guardar. Verifica tu conexión."); }
+}
+
+async function agregarBus() {
+  const nuevoId = buses.length > 0 ? Math.max(...buses.map(b=>b.id)) + 1 : 1;
+  const nuevoBus = {
+    id: nuevoId,
+    placa: "",
+    estado: "no_disponible",
+    rutaId: "",
+    otroDesde: "",
+    otroHasta: "",
+    horaEmbarque: "",
+    horaSalida: "",
+    gpsLink: "",
+    observaciones: "",
+  };
   try {
-    await update(ref(db,`buses/${id}`), { estado });
+    await set(ref(db,`buses/${nuevoId}`), nuevoBus);
   } catch(e) {
-    alert("Error al guardar. Verifica tu conexión.");
+    alert("Error al agregar bus. Verifica tu conexión.");
   }
 }
 
-// ── Toggle campo Otro ──
 function toggleOtro() {
   const sel  = document.getElementById("f-ruta");
   const wrap = document.getElementById("otro-wrap");
-  if (wrap) wrap.style.display = sel.value === "otro" ? "block" : "none";
+  if (wrap) wrap.style.display = sel.value==="otro" ? "block" : "none";
 }
 
-// ── Guardar bus (admin) ──
 async function save(id) {
   const rutaId = document.getElementById("f-ruta").value;
   const datos = {
@@ -718,76 +738,35 @@ async function save(id) {
     gpsLink:      document.getElementById("f-gps").value.trim(),
     observaciones:document.getElementById("f-obs").value.trim(),
   };
-
   const btn = document.getElementById("btn-save");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
-
-  try {
-    await update(ref(db,`buses/${id}`), datos);
-    editBus = null;
-    render();
-  } catch(e) {
-    console.error("Error al guardar:", e);
-    alert("Error al guardar. Verifica tu conexión e intenta de nuevo.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar cambios"; }
-  }
+  editBus = null;
+  try { await update(ref(db,`buses/${id}`), datos); }
+  catch(e) { console.error(e); alert("Error al guardar."); }
 }
 
-// ── Guardar solo el texto del anuncio (no cambia si está publicado) ──
 async function guardarTextoAnuncio() {
   const texto = document.getElementById("f-anuncio").value.trim();
   const btn = document.getElementById("btn-save-anuncio");
   if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
-
   try {
     await update(ref(db,"anuncio"), { texto });
-    if (btn) { btn.disabled=false; btn.textContent="✓ Guardado"; }
-    setTimeout(()=>{ if(btn){ btn.textContent="Guardar texto"; } }, 1500);
-  } catch(e) {
-    console.error("Error al guardar el texto del anuncio:", e);
-    alert("Error al guardar el texto. Verifica tu conexión e intenta de nuevo.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar texto"; }
-  }
+    if (btn) { btn.textContent="✓ Guardado"; btn.disabled=false; }
+    setTimeout(()=>{ if(btn) btn.textContent="Guardar texto"; }, 1500);
+  } catch(e) { console.error(e); if(btn){ btn.disabled=false; btn.textContent="Guardar texto"; } }
 }
 
-// ── Publicar / ocultar el banner (arrastra también el texto actual del cuadro, por si no se había guardado) ──
 async function togglePublicarAnuncio() {
   const nuevoEstado = !anuncio.activo;
-  const campoTexto = document.getElementById("f-anuncio");
-  const texto = campoTexto ? campoTexto.value.trim() : (anuncio.texto||"");
-  const btn = document.getElementById("btn-toggle-anuncio");
-  if (btn) { btn.disabled=true; }
-
-  try {
-    await update(ref(db,"anuncio"), { activo: nuevoEstado, texto });
-  } catch(e) {
-    console.error("Error al cambiar publicación del anuncio:", e);
-    alert("Error al actualizar. Verifica tu conexión e intenta de nuevo.");
-    if (btn) { btn.disabled=false; }
-  }
+  const texto = (document.getElementById("f-anuncio")||{}).value?.trim() || anuncio.texto||"";
+  try { await update(ref(db,"anuncio"), { activo:nuevoEstado, texto }); }
+  catch(e) { console.error(e); }
 }
 
 // ── Exponer ──
-window._setSalida  = async (id) => {
-  const hora = new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"});
-  const eraVol = !!(editBus && editBus._volModal);
-  try {
-    await update(ref(db,`buses/${id}`), { horaSalida: hora });
-    const b = buses.find(b=>b.id===id);
-    if(b){ b.horaSalida=hora; if(eraVol) b._volModal=true; editBus=b; render(); }
-  } catch(e) { alert("Error al guardar."); }
-};
-window._clearSalida = async (id) => {
-  const eraVol = !!(editBus && editBus._volModal);
-  try {
-    await update(ref(db,`buses/${id}`), { horaSalida: "" });
-    const b = buses.find(b=>b.id===id);
-    if(b){ b.horaSalida=""; if(eraVol) b._volModal=true; editBus=b; render(); }
-  } catch(e) { alert("Error al guardar."); }
-};
 window._filt       = f => { filtro=f; render(); };
 window._edit       = id => { editBus=buses.find(b=>b.id===id); render(); };
-window._editVol    = id => { editBus=buses.find(b=>b.id===id); editBus._volModal=true; render(); };
+window._editVol    = id => { const b=buses.find(b=>b.id===id); b._volModal=true; editBus=b; render(); };
 window._cerrar     = () => { editBus=null; render(); };
 window._closeMod   = e => { if(e.target.id==="overlay"){editBus=null;render();} };
 window._save       = save;
@@ -797,21 +776,32 @@ window._saveVol    = async (id) => {
     horaSalida:   document.getElementById("fv-salida").value.trim(),
     observaciones:document.getElementById("fv-obs").value.trim(),
   };
-  const btn = document.getElementById("btn-save");
-  if (btn) { btn.disabled=true; btn.textContent="Guardando..."; }
-  try {
-    await update(ref(db,`buses/${id}`), datos);
-    editBus = null;
-    render();
-  } catch(e) {
-    console.error("Error al guardar:", e);
-    alert("Error al guardar. Verifica tu conexión e intenta de nuevo.");
-    if (btn) { btn.disabled=false; btn.textContent="Guardar"; }
-  }
+  editBus=null;
+  try { await update(ref(db,`buses/${id}`), datos); }
+  catch(e) { console.error(e); alert("Error al guardar."); }
 };
 window._setEstado  = setEstado;
+window._finalizarBus = finalizarBus;
+window._agregarBus = agregarBus;
 window._toggleOtro = toggleOtro;
 window._checkClave = checkClave;
+window._setSalida  = async (id) => {
+  const hora = horaActual();
+  const eraVol = !!(editBus&&editBus._volModal);
+  try {
+    await update(ref(db,`buses/${id}`), { horaSalida:hora });
+    const b=buses.find(b=>b.id===id);
+    if(b){ b.horaSalida=hora; if(eraVol)b._volModal=true; editBus=b; render(); }
+  } catch(e) { alert("Error al guardar."); }
+};
+window._clearSalida = async (id) => {
+  const eraVol = !!(editBus&&editBus._volModal);
+  try {
+    await update(ref(db,`buses/${id}`), { horaSalida:"" });
+    const b=buses.find(b=>b.id===id);
+    if(b){ b.horaSalida=""; if(eraVol)b._volModal=true; editBus=b; render(); }
+  } catch(e) { alert("Error al guardar."); }
+};
 window._abrirAnuncio          = () => { anuncioModal=true; render(); };
 window._cerrarAnuncio         = () => { anuncioModal=false; render(); };
 window._closeAnuncioMod       = e => { if(e.target.id==="overlay"){anuncioModal=false;render();} };
