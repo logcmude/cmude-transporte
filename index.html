@@ -366,7 +366,7 @@ function htmlCard(bus) {
         <div class="mi" style="color:#9ca3af">${ic("clk",13)} Sin horario aún</div>` : ""}
     </div>
 
-    ${durEmbarque !== null || durTrayecto !== null ? `
+    ${esAdm && (durEmbarque !== null || durTrayecto !== null) ? `
       <div style="display:flex;flex-direction:column;gap:5px;margin-top:8px">
         ${durEmbarque !== null ? `
           <div class="duracion">${ic("timer",13)} Embarque: <strong style="margin-left:3px">${durEmbarque} min</strong>
