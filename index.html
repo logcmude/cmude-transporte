@@ -71,6 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 
 .card{border-radius:var(--rlg);padding:16px;border:1.5px solid var(--borde);background:var(--blanco);transition:box-shadow .15s}
 .card:hover{box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.card.programado{background:#faf5ff;border-color:#d8b4fe}
 .card.esperando{background:var(--blanco);border-color:var(--borde)}
 .card.embarcando{background:#f0fdf4;border-color:#86efac}
 .card.en_ruta{background:#eff6ff;border-color:#93c5fd}
@@ -82,6 +83,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .card-num{font-size:11px;color:var(--gris);margin-top:2px;font-weight:500}
 .est{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
 .est .dot{width:6px;height:6px;border-radius:50%}
+.e-programado{background:#f3e8ff;color:#7e22ce} .e-programado .dot{background:#a855f7}
 .e-esperando{background:#f3f4f6;color:#374151} .e-esperando .dot{background:#9ca3af}
 .e-embarcando{background:var(--verde-cl);color:var(--verde)} .e-embarcando .dot{background:#22c55e;animation:pulso 1.5s infinite}
 .e-en_ruta{background:var(--azul-cl);color:var(--azul-tx)} .e-en_ruta .dot{background:#3b82f6;animation:pulso 2s infinite}
@@ -181,13 +183,14 @@ const RUTAS = [
 
 const ESTADOS = {
   no_disponible:{ label:"No disponible", cls:"e-no_disponible" },
+  programado:   { label:"Programado",    cls:"e-programado"    },
   esperando:    { label:"Esperando",     cls:"e-esperando"     },
   embarcando:   { label:"Embarcando",    cls:"e-embarcando"    },
   en_ruta:      { label:"En ruta",       cls:"e-en_ruta"       },
   finalizado:   { label:"Finalizado",    cls:"e-finalizado"    },
 };
 
-const ESTADO_ORDEN = { esperando:0, embarcando:1, en_ruta:2, finalizado:3, no_disponible:4 };
+const ESTADO_ORDEN = { programado:0, esperando:1, embarcando:2, en_ruta:3, finalizado:4, no_disponible:5 };
 
 const params   = new URLSearchParams(window.location.search);
 const modoURL  = params.get("modo");
@@ -258,7 +261,8 @@ function normalizarHora(str) {
 }
 
 function horaActual() {
-  return new Date().toLocaleTimeString("es-EC",{hour:"2-digit",minute:"2-digit"});
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
 }
 
 // Calcula duración en minutos entre dos strings "HH:MM"
@@ -394,7 +398,7 @@ function htmlCard(bus) {
           onclick="window._finalizarBus(${bus.id})">✅ Finalizado</button>
       </div>
       <button class="adm-edit-btn" style="margin-top:8px" onclick="window._editVol(${bus.id})">
-        ${ic("edit",13)} GPS, hora de salida y observaciones
+        ${ic("edit",13)} GPS y observaciones
       </button>` : ""}
 
     ${esAdm ? `
@@ -418,19 +422,6 @@ function htmlModalVol(bus) {
         <div style="font-size:11px;color:var(--gris);margin-top:5px;line-height:1.5">
           📍 Google Maps → tu foto de perfil → "Compartir ubicación" → selecciona duración → "Copiar link" → pega aquí.
         </div>
-      </div>
-      <div class="fdiv"></div>
-      <div class="f">
-        <label>Hora de salida</label>
-        ${bus.horaSalida
-          ? `<div style="display:flex;align-items:center;gap:8px">
-               <div style="flex:1;padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);font-size:14px;font-weight:600">${bus.horaSalida}</div>
-               <button onclick="window._clearSalida(${bus.id})" style="padding:10px 12px;border:1.5px solid var(--borde);border-radius:var(--r);background:none;font-size:12px;color:var(--gris);cursor:pointer;font-family:inherit;white-space:nowrap">Borrar</button>
-             </div>`
-          : `<button onclick="window._setSalida(${bus.id})" style="width:100%;padding:11px;border:1.5px solid #86efac;border-radius:var(--r);background:var(--verde-cl);color:var(--verde);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">
-               🕐 Registrar hora de salida ahora
-             </button>`}
-        <input type="hidden" id="fv-salida" value="${bus.horaSalida||""}"/>
       </div>
       <div class="fdiv"></div>
       <div class="f">
@@ -773,7 +764,6 @@ window._save       = save;
 window._saveVol    = async (id) => {
   const datos = {
     gpsLink:      document.getElementById("fv-gps").value.trim(),
-    horaSalida:   document.getElementById("fv-salida").value.trim(),
     observaciones:document.getElementById("fv-obs").value.trim(),
   };
   editBus=null;
